@@ -18,6 +18,7 @@ import axios, { AxiosError } from 'axios';
 import Config from 'react-native-config';
 import { ApiError } from '../types/api-error';
 import { showToastError } from '../utils/toastMessage';
+import { useMutation } from 'react-query';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -25,7 +26,25 @@ const height = Dimensions.get('window').height;
 type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
 
 function SignIn({ navigation }: SignInScreenProps) {
-  const [loading, setLoading] = useState(false);
+  const { mutate, isLoading } = useMutation(
+    ['signIn'],
+    (query: { email: string; password: string }) =>
+      axios.post(`${Config.API_URL}/user/login`, query),
+    {
+      onSuccess: response => {
+        const {
+          data: { data },
+        } = response;
+        console.log(data);
+      },
+      onError: error => {
+        const errorResponse = (error as AxiosError).response;
+        const { message } = errorResponse?.data as ApiError;
+        showToastError('로그인실패', message);
+      },
+    },
+  );
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const emailRef = useRef<TextInput | null>(null);
@@ -38,25 +57,9 @@ function SignIn({ navigation }: SignInScreenProps) {
     setPassword(text.trim());
   }, []);
   const onSubmit = useCallback(async () => {
-    if (loading) return;
-    try {
-      setLoading(true);
-      const response = await axios.post(`${Config.API_URL}/user/login`, {
-        email,
-        password,
-      });
-      const {
-        data: { data },
-      } = response;
-      console.log(data);
-    } catch (error) {
-      const errorResponse = (error as AxiosError).response;
-      const { message } = errorResponse?.data as ApiError;
-      showToastError('로그인실패', message);
-    } finally {
-      setLoading(false);
-    }
-  }, [loading, navigation, email, password]);
+    if (isLoading) return;
+    mutate({ email, password });
+  }, [isLoading, navigation, email, password]);
 
   const toSignUp = useCallback(() => {
     navigation.navigate('SignUp');

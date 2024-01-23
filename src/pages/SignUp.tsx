@@ -15,8 +15,8 @@ import { useCallback, useRef, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import Config from 'react-native-config';
 import { ApiError } from '../types/api-error';
-import Toast from 'react-native-toast-message';
 import { showToastError } from '../utils/toastMessage';
+import { useMutation } from 'react-query';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -24,7 +24,29 @@ const height = Dimensions.get('window').height;
 type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
 function SignUp({ navigation }: SignUpScreenProps) {
-  const [loading, setLoading] = useState(false);
+  const { mutate, isLoading } = useMutation(
+    ['signIn'],
+    (query: {
+      email: string;
+      password: string;
+      nickname: string;
+      type: string;
+    }) => axios.post(`${Config.API_URL}/user`, query),
+    {
+      onSuccess: response => {
+        const {
+          data: { data },
+        } = response;
+        console.log(data);
+      },
+      onError: error => {
+        const errorResponse = (error as AxiosError).response;
+        const { message } = errorResponse?.data as ApiError;
+        showToastError('계정 생성 실패', message);
+      },
+    },
+  );
+
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
@@ -47,30 +69,12 @@ function SignUp({ navigation }: SignUpScreenProps) {
     setPasswordCheck(text.trim());
   }, []);
   const onSubmit = useCallback(async () => {
-    if (loading) return;
+    if (isLoading) return;
     if (password !== passwordCheck || !passwordCheck) {
       return showToastError('비밀번호확인', '비밀번호가 일치하지 않습니다.');
     }
-    try {
-      setLoading(true);
-      const response = await axios.post(`${Config.API_URL}/user`, {
-        email,
-        nickname,
-        password,
-        type: 'origin',
-      });
-      const {
-        data: { data },
-      } = response;
-      console.log(data);
-    } catch (error) {
-      const errorResponse = (error as AxiosError).response;
-      const { message } = errorResponse?.data as ApiError;
-      showToastError('계정 생성 실패', message);
-    } finally {
-      setLoading(false);
-    }
-  }, [loading, navigation, email, nickname, password, passwordCheck]);
+    mutate({ email, password, nickname, type: 'origin' });
+  }, [isLoading, navigation, email, nickname, password, passwordCheck]);
 
   const toSignIn = useCallback(() => {
     navigation.navigate('SignIn');
