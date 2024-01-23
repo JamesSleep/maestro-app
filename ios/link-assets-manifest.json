@@ -2,6 +2,26 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "fonts/Eczar-Bold.ttf",
+      "sha1": "df09877dd973a09d6eb0b994800249b7f0d3aaf7"
+    },
+    {
+      "path": "fonts/Eczar-ExtraBold.ttf",
+      "sha1": "463ca9ccd3af888b56937bf70d2eef958300158e"
+    },
+    {
+      "path": "fonts/Eczar-Medium.ttf",
+      "sha1": "b461c3440d5943adcf3c8b4bc04d67037db00389"
+    },
+    {
+      "path": "fonts/Eczar-Regular.ttf",
+      "sha1": "7c45c26ceb6f83d5d17c89e3a4b82f2b4265d028"
+    },
+    {
+      "path": "fonts/Eczar-SemiBold.ttf",
+      "sha1": "540bab0eafa8c7e3ef2d0014465a627c39aa8554"
+    },
+    {
       "path": "fonts/NanumSquareRoundB.ttf",
       "sha1": "e92331df4c26e67374cb41c18d4bdf326db8e53d"
     },

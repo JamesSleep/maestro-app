@@ -3,4 +3,6 @@ export const AppFontFamily = {
   regular: 'NanumSquareRoundR',
   bold: 'NanumSquareRoundB',
   extraBold: 'NanumSquareRoundEB',
+  logo: 'Eczar-ExtraBold',
+  sub: 'Eczar-Regular',
 };

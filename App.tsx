@@ -1,6 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
 import AppInner from './AppInner';
-import { SafeAreaView } from 'react-native';
 
 function App() {
   return (

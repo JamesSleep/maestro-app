@@ -10,55 +10,67 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { AppFontFamily } from '../theme/font';
+import DismissKeyboardView from '../components/DismissKeyboardView';
+import { useCallback } from 'react';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../AppInner';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
-function SignIn() {
+type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
+
+function SignIn({ navigation }: SignInScreenProps) {
+  const toSignUp = useCallback(() => {
+    navigation.navigate('SignUp');
+  }, [navigation]);
+
   return (
-    <View
-      style={{
-        flex: 1,
-      }}>
-      <Image source={require('../assets/deft.png')} style={styles.image} />
-      <LinearGradient
-        colors={['black', 'rgba(0,0,0,0.4)', 'black']}
-        start={{ x: 1, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.linear}>
-        <View style={{ flex: 12, justifyContent: 'center' }}>
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            placeholderTextColor="rgba(255, 242, 248, 0.6)"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="비밀번호"
-            placeholderTextColor="rgba(255, 242, 248, 0.6)"
-          />
-          <Pressable>
-            <LinearGradient
-              colors={['#fc8263', '#973e7e']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1.2, y: 0 }}
-              style={styles.loginBtn}>
-              <Text style={styles.loginText}>로그인</Text>
-            </LinearGradient>
-          </Pressable>
-          <Pressable style={styles.forgotBtn}>
-            <Text style={styles.forgotText}>
-              비밀번호를 잊어버리셨나요? 비밀번호 찾기
-            </Text>
-          </Pressable>
-        </View>
-        <View style={{ flex: 1 }}>
-          <Pressable style={styles.forgotBtn}>
-            <Text style={styles.forgotText}>회원가입하기</Text>
-          </Pressable>
-        </View>
-      </LinearGradient>
-    </View>
+    <DismissKeyboardView bounce={false} scrollEnabled={false}>
+      <View
+        style={{
+          flex: 1,
+        }}>
+        <Image source={require('../assets/deft.png')} style={styles.image} />
+        <LinearGradient
+          colors={['black', 'rgba(0,0,0,0.4)', 'black']}
+          start={{ x: 1, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.linear}>
+          <View style={{ flex: 12, justifyContent: 'center' }}>
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              placeholderTextColor="rgba(255, 242, 248, 0.6)"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="비밀번호"
+              placeholderTextColor="rgba(255, 242, 248, 0.6)"
+            />
+            <Pressable>
+              <LinearGradient
+                colors={['#fc8263', '#973e7e']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1.2, y: 0 }}
+                style={styles.loginBtn}>
+                <Text style={styles.loginText}>로그인</Text>
+              </LinearGradient>
+            </Pressable>
+            <Pressable style={styles.forgotBtn}>
+              <Text style={styles.forgotText}>
+                비밀번호를 잊어버리셨나요? 비밀번호 찾기
+              </Text>
+            </Pressable>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Pressable onPress={toSignUp} style={styles.forgotBtn}>
+              <Text style={styles.forgotText}>계정생성</Text>
+            </Pressable>
+          </View>
+        </LinearGradient>
+      </View>
+    </DismissKeyboardView>
   );
 }
 
