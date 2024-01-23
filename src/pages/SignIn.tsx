@@ -2,7 +2,6 @@ import {
   Dimensions,
   Image,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -19,6 +18,8 @@ import Config from 'react-native-config';
 import { ApiError } from '../types/api-error';
 import { showToastError } from '../utils/toastMessage';
 import { useMutation } from 'react-query';
+import { useRecoilState } from 'recoil';
+import { tokenState } from '../store/recoilState';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -26,6 +27,12 @@ const height = Dimensions.get('window').height;
 type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
 
 function SignIn({ navigation }: SignInScreenProps) {
+  const [token, setToken] = useRecoilState(tokenState);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const emailRef = useRef<TextInput | null>(null);
+  const passwordRef = useRef<TextInput | null>(null);
+
   const { mutate, isLoading } = useMutation(
     ['signIn'],
     (query: { email: string; password: string }) =>
@@ -36,6 +43,7 @@ function SignIn({ navigation }: SignInScreenProps) {
           data: { data },
         } = response;
         console.log(data);
+        setToken(data.token);
       },
       onError: error => {
         const errorResponse = (error as AxiosError).response;
@@ -44,11 +52,6 @@ function SignIn({ navigation }: SignInScreenProps) {
       },
     },
   );
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const emailRef = useRef<TextInput | null>(null);
-  const passwordRef = useRef<TextInput | null>(null);
 
   const onChangeEmail = useCallback((text: string) => {
     setEmail(text.trim());

@@ -24,6 +24,15 @@ const height = Dimensions.get('window').height;
 type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
 function SignUp({ navigation }: SignUpScreenProps) {
+  const [email, setEmail] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
+  const emailRef = useRef<TextInput | null>(null);
+  const nicknameRef = useRef<TextInput | null>(null);
+  const passwordRef = useRef<TextInput | null>(null);
+  const passwordCheckRef = useRef<TextInput | null>(null);
+
   const { mutate, isLoading } = useMutation(
     ['signIn'],
     (query: {
@@ -46,15 +55,6 @@ function SignUp({ navigation }: SignUpScreenProps) {
       },
     },
   );
-
-  const [email, setEmail] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordCheck, setPasswordCheck] = useState('');
-  const emailRef = useRef<TextInput | null>(null);
-  const nicknameRef = useRef<TextInput | null>(null);
-  const passwordRef = useRef<TextInput | null>(null);
-  const passwordCheckRef = useRef<TextInput | null>(null);
 
   const onChangeEmail = useCallback((text: string) => {
     setEmail(text.trim());
