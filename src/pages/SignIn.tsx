@@ -11,9 +11,13 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { AppFontFamily } from '../theme/font';
 import DismissKeyboardView from '../components/DismissKeyboardView';
-import { useCallback } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../AppInner';
+import axios, { AxiosError } from 'axios';
+import Config from 'react-native-config';
+import { ApiError } from '../types/api-error';
+import { showToastError } from '../utils/toastMessage';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -21,6 +25,39 @@ const height = Dimensions.get('window').height;
 type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
 
 function SignIn({ navigation }: SignInScreenProps) {
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const emailRef = useRef<TextInput | null>(null);
+  const passwordRef = useRef<TextInput | null>(null);
+
+  const onChangeEmail = useCallback((text: string) => {
+    setEmail(text.trim());
+  }, []);
+  const onChangePassword = useCallback((text: string) => {
+    setPassword(text.trim());
+  }, []);
+  const onSubmit = useCallback(async () => {
+    if (loading) return;
+    try {
+      setLoading(true);
+      const response = await axios.post(`${Config.API_URL}/user/login`, {
+        email,
+        password,
+      });
+      const {
+        data: { data },
+      } = response;
+      console.log(data);
+    } catch (error) {
+      const errorResponse = (error as AxiosError).response;
+      const { message } = errorResponse?.data as ApiError;
+      showToastError('로그인실패', message);
+    } finally {
+      setLoading(false);
+    }
+  }, [loading, navigation, email, password]);
+
   const toSignUp = useCallback(() => {
     navigation.navigate('SignUp');
   }, [navigation]);
@@ -42,13 +79,29 @@ function SignIn({ navigation }: SignInScreenProps) {
               style={styles.input}
               placeholder="Email"
               placeholderTextColor="rgba(255, 242, 248, 0.6)"
+              onChangeText={onChangeEmail}
+              textContentType="emailAddress"
+              value={email}
+              returnKeyType="next"
+              clearButtonMode="while-editing"
+              ref={emailRef}
+              onSubmitEditing={() => passwordRef.current?.focus()}
+              blurOnSubmit={false}
             />
             <TextInput
               style={styles.input}
               placeholder="비밀번호"
               placeholderTextColor="rgba(255, 242, 248, 0.6)"
+              onChangeText={onChangePassword}
+              textContentType="password"
+              value={password}
+              secureTextEntry
+              returnKeyType="send"
+              clearButtonMode="while-editing"
+              ref={passwordRef}
+              onSubmitEditing={onSubmit}
             />
-            <Pressable>
+            <Pressable onPress={onSubmit}>
               <LinearGradient
                 colors={['#fc8263', '#973e7e']}
                 start={{ x: 0, y: 0 }}
