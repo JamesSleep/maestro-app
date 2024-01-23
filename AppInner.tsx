@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import HomeStackNavigation from 'src/navigations/HomeStackNavigation';
 
 import MainDrawNavigation from 'src/navigations/MainDrawNavigation';
 import RootStackNavigation from 'src/navigations/RootStackNavigation';
@@ -20,7 +21,7 @@ function AppInner() {
     }
   };
 
-  return token ? <MainDrawNavigation /> : <RootStackNavigation />;
+  return token ? <HomeStackNavigation /> : <RootStackNavigation />;
 }
 
 export default AppInner;

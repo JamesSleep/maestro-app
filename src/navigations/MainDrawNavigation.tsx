@@ -1,4 +1,13 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {
+  DrawerScreenProps,
+  createDrawerNavigator,
+} from '@react-navigation/drawer';
+import { CompositeScreenProps } from '@react-navigation/native';
+import {
+  HomeStackParamList,
+  HomeStackScreenProps,
+} from './HomeStackNavigation';
+
 import Favorites from 'src/pages/Favorites';
 import MyAccount from 'src/pages/MyAccount';
 import Notifications from 'src/pages/Notifications';
@@ -11,11 +20,19 @@ export type MainDrawParamList = {
   MyAccount: undefined;
 };
 
+export type MainDrawScreenProps<T extends keyof MainDrawParamList> =
+  CompositeScreenProps<
+    DrawerScreenProps<MainDrawParamList, T>,
+    HomeStackScreenProps<keyof HomeStackParamList>
+  >;
+
 const Draw = createDrawerNavigator<MainDrawParamList>();
 
 function MainDrawNavigation() {
   return (
-    <Draw.Navigator initialRouteName="Ranking">
+    <Draw.Navigator
+      initialRouteName="Ranking"
+      screenOptions={{ headerShown: false }}>
       <Draw.Screen name="Ranking" component={Ranking} />
       <Draw.Screen name="Favorites" component={Favorites} />
       <Draw.Screen name="Notifications" component={Notifications} />
