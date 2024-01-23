@@ -11,10 +11,12 @@ import DismissKeyboardView from '../components/DismissKeyboardView';
 import { AppFontFamily } from '../theme/font';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../AppInner';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import Config from 'react-native-config';
 import { ApiError } from '../types/api-error';
+import Toast from 'react-native-toast-message';
+import { showToastError } from '../utils/toastMessage';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -26,7 +28,11 @@ function SignUp({ navigation }: SignUpScreenProps) {
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
+  const emailRef = useRef<TextInput | null>(null);
+  const nicknameRef = useRef<TextInput | null>(null);
+  const passwordRef = useRef<TextInput | null>(null);
+  const passwordCheckRef = useRef<TextInput | null>(null);
 
   const onChangeEmail = useCallback((text: string) => {
     setEmail(text.trim());
@@ -37,8 +43,14 @@ function SignUp({ navigation }: SignUpScreenProps) {
   const onChangePassword = useCallback((text: string) => {
     setPassword(text.trim());
   }, []);
+  const onChangePasswordCheck = useCallback((text: string) => {
+    setPasswordCheck(text.trim());
+  }, []);
   const onSubmit = useCallback(async () => {
     if (loading) return;
+    if (password !== passwordCheck || !passwordCheck) {
+      return showToastError('비밀번호확인', '비밀번호가 일치하지 않습니다.');
+    }
     try {
       setLoading(true);
       const response = await axios.post(`${Config.API_URL}/user`, {
@@ -47,15 +59,18 @@ function SignUp({ navigation }: SignUpScreenProps) {
         password,
         type: 'origin',
       });
-      console.log(response);
+      const {
+        data: { data },
+      } = response;
+      console.log(data);
     } catch (error) {
       const errorResponse = (error as AxiosError).response;
       const { message } = errorResponse?.data as ApiError;
-      console.log(message);
+      showToastError('계정 생성 실패', message);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [loading, navigation, email, nickname, password, passwordCheck]);
 
   const toSignIn = useCallback(() => {
     navigation.navigate('SignIn');
@@ -78,21 +93,54 @@ function SignUp({ navigation }: SignUpScreenProps) {
               style={styles.input}
               placeholder="닉네임"
               placeholderTextColor="rgba(255, 242, 248, 0.9)"
+              onChangeText={onChangeNickname}
+              textContentType="nickname"
+              value={nickname}
+              returnKeyType="next"
+              clearButtonMode="while-editing"
+              ref={nicknameRef}
+              onSubmitEditing={() => emailRef.current?.focus()}
+              blurOnSubmit={false}
             />
             <TextInput
               style={styles.input}
               placeholder="Email"
               placeholderTextColor="rgba(255, 242, 248, 0.9)"
+              onChangeText={onChangeEmail}
+              textContentType="emailAddress"
+              value={email}
+              returnKeyType="next"
+              clearButtonMode="while-editing"
+              ref={emailRef}
+              onSubmitEditing={() => passwordRef.current?.focus()}
+              blurOnSubmit={false}
             />
             <TextInput
               style={styles.input}
               placeholder="비밀번호"
               placeholderTextColor="rgba(255, 242, 248, 0.9)"
+              onChangeText={onChangePassword}
+              textContentType="password"
+              value={password}
+              secureTextEntry
+              returnKeyType="next"
+              clearButtonMode="while-editing"
+              ref={passwordRef}
+              onSubmitEditing={() => passwordCheckRef.current?.focus()}
+              blurOnSubmit={false}
             />
             <TextInput
               style={styles.input}
               placeholder="비밀번호 확인"
               placeholderTextColor="rgba(255, 242, 248, 0.9)"
+              onChangeText={onChangePasswordCheck}
+              textContentType="password"
+              value={passwordCheck}
+              secureTextEntry
+              returnKeyType="send"
+              clearButtonMode="while-editing"
+              ref={passwordCheckRef}
+              onSubmitEditing={onSubmit}
             />
           </View>
           <View
