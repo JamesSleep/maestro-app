@@ -1,21 +1,26 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SignUp from './src/pages/SignUp';
-import SignIn from './src/pages/SignIn';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
-export type RootStackParamList = {
-  SignIn: undefined;
-  SignUp: undefined;
-};
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
+import MainDrawNavigation from 'src/navigations/MainDrawNavigation';
+import RootStackNavigation from 'src/navigations/RootStackNavigation';
+import { tokenState } from 'src/store/recoilState';
 
 function AppInner() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
-      <Stack.Screen name="SignIn" component={SignIn} />
-      <Stack.Screen name="SignUp" component={SignUp} />
-    </Stack.Navigator>
-  );
+  const [token, setToken] = useRecoilState(tokenState);
+
+  useEffect(() => {
+    getToken();
+  }, []);
+
+  const getToken = async () => {
+    const savedToken = await AsyncStorage.getItem('token');
+    if (savedToken) {
+      setToken(savedToken);
+    }
+  };
+
+  return token ? <MainDrawNavigation /> : <RootStackNavigation />;
 }
 
 export default AppInner;

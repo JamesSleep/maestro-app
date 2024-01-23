@@ -10,6 +10,14 @@ export const showToastError = (
     text1: title,
     text2: message ? message.toString().split(',')[0] : '관리자 문의',
     text1Style: { fontFamily: AppFontFamily.bold, fontSize: 12 },
-    text2Style: { fontFamily: AppFontFamily.regular, fontSize: 14 },
+    text2Style: { fontFamily: AppFontFamily.regular, fontSize: 11 },
+  });
+};
+
+export const showToastSuccess = (message: string) => {
+  Toast.show({
+    type: 'success',
+    text1: message,
+    text1Style: { fontFamily: AppFontFamily.regular, fontSize: 12 },
   });
 };

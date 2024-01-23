@@ -8,18 +8,20 @@ import {
   View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { AppFontFamily } from '../theme/font';
-import DismissKeyboardView from '../components/DismissKeyboardView';
 import { useCallback, useRef, useState } from 'react';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../AppInner';
 import axios, { AxiosError } from 'axios';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Config from 'react-native-config';
-import { ApiError } from '../types/api-error';
-import { showToastError } from '../utils/toastMessage';
 import { useMutation } from 'react-query';
 import { useRecoilState } from 'recoil';
-import { tokenState } from '../store/recoilState';
+
+import { AppFontFamily } from 'src/theme/font';
+import DismissKeyboardView from 'src/components/DismissKeyboardView';
+import { RootStackParamList } from 'src/navigations/RootStackNavigation';
+import { ApiError } from 'src/types/api-error';
+import { showToastError } from 'src/utils/toastMessage';
+import { tokenState } from 'src/store/recoilState';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -38,12 +40,12 @@ function SignIn({ navigation }: SignInScreenProps) {
     (query: { email: string; password: string }) =>
       axios.post(`${Config.API_URL}/user/login`, query),
     {
-      onSuccess: response => {
+      onSuccess: async response => {
         const {
           data: { data },
         } = response;
-        console.log(data);
         setToken(data.token);
+        await AsyncStorage.setItem('token', JSON.stringify(data.token));
       },
       onError: error => {
         const errorResponse = (error as AxiosError).response;

@@ -7,16 +7,16 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import DismissKeyboardView from '../components/DismissKeyboardView';
-import { AppFontFamily } from '../theme/font';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../AppInner';
 import { useCallback, useRef, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import Config from 'react-native-config';
-import { ApiError } from '../types/api-error';
-import { showToastError } from '../utils/toastMessage';
 import { useMutation } from 'react-query';
+import DismissKeyboardView from 'src/components/DismissKeyboardView';
+import { AppFontFamily } from 'src/theme/font';
+import { RootStackParamList } from 'src/navigations/RootStackNavigation';
+import { ApiError } from 'src/types/api-error';
+import { showToastError, showToastSuccess } from 'src/utils/toastMessage';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -46,7 +46,8 @@ function SignUp({ navigation }: SignUpScreenProps) {
         const {
           data: { data },
         } = response;
-        console.log(data);
+        showToastSuccess('계정 생성 완료');
+        toSignIn();
       },
       onError: error => {
         const errorResponse = (error as AxiosError).response;
