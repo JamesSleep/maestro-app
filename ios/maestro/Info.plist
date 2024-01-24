@@ -35,19 +35,25 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>NanumSquareRoundOTFB.otf</string>
-		<string>NanumSquareRoundOTFEB.otf</string>
-		<string>NanumSquareRoundOTFL.otf</string>
-		<string>NanumSquareRoundOTFR.otf</string>
-		<string>NanumSquareRoundB.ttf</string>
-		<string>NanumSquareRoundEB.ttf</string>
-		<string>NanumSquareRoundL.ttf</string>
-		<string>NanumSquareRoundR.ttf</string>
-		<string>Eczar-Bold.ttf</string>
-		<string>Eczar-ExtraBold.ttf</string>
-		<string>Eczar-Medium.ttf</string>
-		<string>Eczar-Regular.ttf</string>
-		<string>Eczar-SemiBold.ttf</string>
+		<string>AntDesign.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>FontAwesome6_Brands.ttf</string>
+		<string>FontAwesome6_Regular.ttf</string>
+		<string>FontAwesome6_Solid.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>Zocial.ttf</string>
+		<string>Fontisto.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
