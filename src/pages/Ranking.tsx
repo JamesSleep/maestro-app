@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   },
   topBannerRating: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     marginBottom: 20,
   },
   topBannerReview: {

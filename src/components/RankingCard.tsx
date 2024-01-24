@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import { MainDrawScreenProps } from 'src/navigations/MainDrawNavigation';
 import { appColor } from 'src/theme/color';
@@ -18,10 +19,10 @@ function RankingCard({ match }: { match: any }) {
   };
 
   return (
-    <View
+    <TouchableWithoutFeedback
       key={match.id}
       style={styles.match}
-      onTouchEnd={() => navigation.navigate('MyAccount' as never)}>
+      onPress={() => navigation.navigate('MyAccount' as never)}>
       <View style={styles.posterBlur}></View>
       <Image
         source={
@@ -43,7 +44,7 @@ function RankingCard({ match }: { match: any }) {
         />
         <Text style={styles.matchReview}>189개의 리뷰</Text>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
   },
   matchRating: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   matchReview: {
     fontFamily: AppFontFamily.regular,

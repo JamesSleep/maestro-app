@@ -22,6 +22,22 @@
       "sha1": "540bab0eafa8c7e3ef2d0014465a627c39aa8554"
     },
     {
+      "path": "fonts/NanumGothic.ttf",
+      "sha1": "6b61cdb4fe859e3932437d6d816c1944daeff1b2"
+    },
+    {
+      "path": "fonts/NanumGothicBold.ttf",
+      "sha1": "f892d26a11d118ca76a00901390f611c34bbf62d"
+    },
+    {
+      "path": "fonts/NanumGothicExtraBold.ttf",
+      "sha1": "974116089db0e8c0e19b62a6a280908cbe3fafba"
+    },
+    {
+      "path": "fonts/NanumGothicLight.ttf",
+      "sha1": "451faa2221d1613e646a95bc646cce556a7f1758"
+    },
+    {
       "path": "fonts/NanumSquareRoundB.ttf",
       "sha1": "e92331df4c26e67374cb41c18d4bdf326db8e53d"
     },

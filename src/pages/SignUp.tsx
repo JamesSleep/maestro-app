@@ -90,7 +90,7 @@ function SignUp({ navigation }: SignUpScreenProps) {
       <DismissKeyboardView style={styles.front}>
         <View style={{ height: height }}>
           <View style={{ flex: 3, justifyContent: 'center' }}>
-            <Text style={styles.title}>maestro</Text>
+            <Text style={styles.title}>MAESTRO</Text>
             <Text style={styles.subTitle}>계정 생성</Text>
           </View>
           <View style={{ flex: 4, justifyContent: 'center' }}>
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 60,
-    fontFamily: AppFontFamily.logo,
+    fontFamily: AppFontFamily.extraBold,
     color: 'rgba(255, 242, 248, 1)',
     textAlign: 'center',
   },

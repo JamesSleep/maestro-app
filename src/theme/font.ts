@@ -1,8 +1,8 @@
 export const AppFontFamily = {
-  light: 'NanumSquareRoundL',
-  regular: 'NanumSquareRoundR',
-  bold: 'NanumSquareRoundB',
-  extraBold: 'NanumSquareRoundEB',
+  light: 'NanumGothicLight',
+  regular: 'NanumGothic',
+  bold: 'NanumGothicBold',
+  extraBold: 'NanumGothicExtraBold',
   logo: 'Eczar-ExtraBold',
   sub: 'Eczar-Regular',
 };

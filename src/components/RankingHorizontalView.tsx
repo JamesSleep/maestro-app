@@ -39,10 +39,12 @@ function RankingHorizontalView({
           ? data.map(
               (match: any) =>
                 tournament === match.tournament && (
-                  <RankingCard match={match} />
+                  <RankingCard key={match.id} match={match} />
                 ),
             )
-          : data.map((match: any) => <RankingCard match={match} />)}
+          : data.map((match: any) => (
+              <RankingCard key={match.id} match={match} />
+            ))}
       </ScrollView>
       <View style={{ height: 30 }} />
     </>

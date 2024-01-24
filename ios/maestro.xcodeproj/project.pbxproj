@@ -27,6 +27,10 @@
 		E8C2DA0480F74793B0E5CF05 /* Eczar-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B47216E50CBC4CADBD8DAAAD /* Eczar-SemiBold.ttf */; };
 		F05486FB0EE241819CACDEB2 /* NanumSquareRoundOTFR.otf in Resources */ = {isa = PBXBuildFile; fileRef = E179BD80E30C44CB81B7BEE7 /* NanumSquareRoundOTFR.otf */; };
 		F8C1853A8AA94CF79AB7E353 /* NanumSquareRoundR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8E791AF1CEB41EB867A9B52 /* NanumSquareRoundR.ttf */; };
+		8B559A7068024B159EA5E13C /* NanumGothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9290B51F752F44C0A7491D70 /* NanumGothic.ttf */; };
+		4BB5BF53145146B18478749A /* NanumGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2A9493EABE234CE9A71C9C2B /* NanumGothicBold.ttf */; };
+		B495A9963A7A4CAA8E27AAF1 /* NanumGothicExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3423AFD4E7AA4BEAA15277BC /* NanumGothicExtraBold.ttf */; };
+		A57E0EFA87644F25962B0FF1 /* NanumGothicLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9939DA51D0484CB5AE7E26BE /* NanumGothicLight.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +106,10 @@
 		E531E3E95BF744459948E5FD /* Eczar-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Eczar-Regular.ttf"; path = "../fonts/Eczar-Regular.ttf"; sourceTree = "<group>"; };
 		E8E791AF1CEB41EB867A9B52 /* NanumSquareRoundR.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareRoundR.ttf; path = ../fonts/NanumSquareRoundR.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		9290B51F752F44C0A7491D70 /* NanumGothic.ttf */ = {isa = PBXFileReference; name = "NanumGothic.ttf"; path = "../fonts/NanumGothic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		2A9493EABE234CE9A71C9C2B /* NanumGothicBold.ttf */ = {isa = PBXFileReference; name = "NanumGothicBold.ttf"; path = "../fonts/NanumGothicBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3423AFD4E7AA4BEAA15277BC /* NanumGothicExtraBold.ttf */ = {isa = PBXFileReference; name = "NanumGothicExtraBold.ttf"; path = "../fonts/NanumGothicExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		9939DA51D0484CB5AE7E26BE /* NanumGothicLight.ttf */ = {isa = PBXFileReference; name = "NanumGothicLight.ttf"; path = "../fonts/NanumGothicLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +179,10 @@
 				96853D51CF8F4F15B7F7CE53 /* Eczar-Medium.ttf */,
 				E531E3E95BF744459948E5FD /* Eczar-Regular.ttf */,
 				B47216E50CBC4CADBD8DAAAD /* Eczar-SemiBold.ttf */,
+				9290B51F752F44C0A7491D70 /* NanumGothic.ttf */,
+				2A9493EABE234CE9A71C9C2B /* NanumGothicBold.ttf */,
+				3423AFD4E7AA4BEAA15277BC /* NanumGothicExtraBold.ttf */,
+				9939DA51D0484CB5AE7E26BE /* NanumGothicLight.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -375,6 +387,10 @@
 				00071D6D8A8846259711B010 /* Eczar-Medium.ttf in Resources */,
 				C8E0714A4CFD40A7AD8A76EC /* Eczar-Regular.ttf in Resources */,
 				E8C2DA0480F74793B0E5CF05 /* Eczar-SemiBold.ttf in Resources */,
+				8B559A7068024B159EA5E13C /* NanumGothic.ttf in Resources */,
+				4BB5BF53145146B18478749A /* NanumGothicBold.ttf in Resources */,
+				B495A9963A7A4CAA8E27AAF1 /* NanumGothicExtraBold.ttf in Resources */,
+				A57E0EFA87644F25962B0FF1 /* NanumGothicLight.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
