@@ -46,6 +46,10 @@ function SignIn({ navigation }: SignInScreenProps) {
         } = response;
         setToken(data.token);
         await AsyncStorage.setItem('token', JSON.stringify(data.token));
+        axios.interceptors.request.use(config => {
+          config.headers.Authorization = 'Bearer ' + token;
+          return config;
+        });
       },
       onError: error => {
         const errorResponse = (error as AxiosError).response;

@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import HomeStackNavigation from 'src/navigations/HomeStackNavigation';
@@ -18,6 +19,10 @@ function AppInner() {
     const savedToken = await AsyncStorage.getItem('token');
     if (savedToken) {
       setToken(savedToken);
+      axios.interceptors.request.use(config => {
+        config.headers.Authorization = 'Bearer ' + savedToken;
+        return config;
+      });
     }
   };
 
