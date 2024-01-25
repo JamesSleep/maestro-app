@@ -1,6 +1,8 @@
 export interface Match {
   id: number;
   blueTeam: string;
+  blueTeamScore: number;
+  redTeamScore: number;
   redTeam: string;
   tournament: string;
   round: string;
@@ -17,4 +19,16 @@ export interface Player {
   id: number;
   name: string;
   picture: string;
+}
+
+export interface User {
+  id: number;
+  nickname: string;
+  profile: string;
+}
+
+export interface Comment {
+  id: number;
+  content: string;
+  score: number;
 }

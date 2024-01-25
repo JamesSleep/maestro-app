@@ -19,7 +19,7 @@ function RankingHorizontalView({
   data,
 }: {
   title: string;
-  tournament?: 'Worlds' | 'LCK';
+  tournament?: 'WORLDS' | 'LCK';
   data: Match[];
 }) {
   return (

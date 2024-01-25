@@ -4,8 +4,6 @@ import {
   Animated,
   Dimensions,
   Image,
-  Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -79,6 +77,7 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
         bounces={false}
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
+        scrollEventThrottle={16}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { useNativeDriver: false },
@@ -117,8 +116,8 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
             </View>
           </View>
         </TouchableWithoutFeedback>
-        <RankingHorizontalView data={data} title="모든 경기" />
-        <RankingHorizontalView data={data} title="Worlds" tournament="Worlds" />
+        <RankingHorizontalView data={data} title="Top 10" />
+        <RankingHorizontalView data={data} title="Worlds" tournament="WORLDS" />
         <RankingHorizontalView data={data} title="LCK" tournament="LCK" />
       </ScrollView>
       <AnimatedHeader
