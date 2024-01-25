@@ -2,12 +2,14 @@ import { useNavigation } from '@react-navigation/native';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
-import { MainDrawScreenProps } from 'src/navigations/MainDrawNavigation';
+import { Match } from 'src/api/DataType';
+import { HomeStackScreenProps } from 'src/navigations/HomeStackNavigation';
 import { appColor } from 'src/theme/color';
 import { AppFontFamily } from 'src/theme/font';
 
-function RankingCard({ match }: { match: any }) {
-  const navigation = useNavigation();
+function RankingCard({ match }: { match: Match }) {
+  const navigation =
+    useNavigation<HomeStackScreenProps<'Main'>['navigation']>();
   const setTitle = (matchData: any) => {
     const { matchDate, tournament, season, round, blueTeam, redTeam } =
       matchData;
@@ -22,7 +24,7 @@ function RankingCard({ match }: { match: any }) {
     <TouchableWithoutFeedback
       key={match.id}
       style={styles.match}
-      onPress={() => navigation.navigate('MyAccount' as never)}>
+      onPress={() => navigation.navigate('MatchDetail', { id: match.id })}>
       <View style={styles.posterBlur}></View>
       <Image
         source={

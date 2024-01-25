@@ -11,6 +11,7 @@ import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import { appColor } from 'src/theme/color';
 import { AppFontFamily } from 'src/theme/font';
 import RankingCard from './RankingCard';
+import { Match } from 'src/api/DataType';
 
 function RankingHorizontalView({
   title,
@@ -19,7 +20,7 @@ function RankingHorizontalView({
 }: {
   title: string;
   tournament?: 'Worlds' | 'LCK';
-  data: any;
+  data: Match[];
 }) {
   return (
     <>

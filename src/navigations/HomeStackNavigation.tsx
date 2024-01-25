@@ -3,12 +3,13 @@ import {
   NativeStackScreenProps,
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
-import Match from 'src/pages/Match';
+import MatchDetail from 'src/pages/MatchDetail';
 import MainDrawNavigation, { MainDrawParamList } from './MainDrawNavigation';
+import { Match } from 'src/api/DataType';
 
 export type HomeStackParamList = {
   Main: NavigatorScreenParams<MainDrawParamList>;
-  Match: undefined;
+  MatchDetail: { id: number };
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> =
@@ -22,7 +23,7 @@ function HomeStackNavigation() {
       initialRouteName="Main"
       screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
       <Stack.Screen name="Main" component={MainDrawNavigation} />
-      <Stack.Screen name="Match" component={Match} />
+      <Stack.Screen name="MatchDetail" component={MatchDetail} />
     </Stack.Navigator>
   );
 }

@@ -1,42 +1,41 @@
 import axios, { AxiosError } from 'axios';
-import { useCallback, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
-  Animated,
   Dimensions,
   Image,
   Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
   View,
+  Animated,
 } from 'react-native';
 import Config from 'react-native-config';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { getStatusBarHeight } from 'react-native-safearea-height';
-import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useQuery } from 'react-query';
 import { Match } from 'src/api/DataType';
 import AnimatedHeader from 'src/components/AnimatedHeader';
-import RankingHorizontalView from 'src/components/RankingHorizontalView';
-import { MainDrawScreenProps } from 'src/navigations/MainDrawNavigation';
+import { HomeStackScreenProps } from 'src/navigations/HomeStackNavigation';
 import { appColor } from 'src/theme/color';
 import { AppFontFamily } from 'src/theme/font';
 import { ApiError } from 'src/types/api-error';
 import { showToastError } from 'src/utils/toastMessage';
 
 const width = Dimensions.get('window').width;
-const topBannerHeight = 400;
+const thumbnailHeight = 400;
 const headerHeight = 60 + getStatusBarHeight(true) / 2;
 
-function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
+function MatchDetail({
+  navigation,
+  route: { params },
+}: HomeStackScreenProps<'MatchDetail'>) {
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const { data, isLoading } = useQuery(
-    ['getAllMatches'],
-    () => axios.get(`${Config.API_URL}/match`),
+    ['getOneMatch'],
+    () => axios.get(`${Config.API_URL}/match/${params.id}`),
     {
       onError: error => {
         const errorResponse = (error as AxiosError).response;
@@ -44,8 +43,8 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
         showToastError('네트워크 오류', message);
       },
       select: response => {
-        const matches: Match[] = response.data.data;
-        return matches;
+        const match: Match = response.data.data;
+        return match;
       },
     },
   );
@@ -60,20 +59,18 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
     }${round}\n${blueTeam} vs ${redTeam}`;
   };
 
-  if (isLoading || !data) {
-    return <></>;
-  }
+  if (isLoading || !data) return <></>;
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View style={[styles.header, { height: headerHeight }]}>
         <Icon
-          name="menu"
+          name="arrow-back-sharp"
           size={25}
           color={appColor.white}
-          onPress={() => navigation.toggleDrawer()}
+          onPress={() => navigation.goBack()}
         />
-        <Icon name="search" size={25} color={appColor.white} />
+        <Icon name="heart-outline" size={25} color={appColor.white} />
       </View>
       <ScrollView
         bounces={false}
@@ -83,49 +80,32 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { useNativeDriver: false },
         )}>
-        <TouchableWithoutFeedback
-          onPress={() => navigation.navigate('MatchDetail', { id: data[0].id })}
-          style={styles.topBanner}>
-          <Image
-            source={{ uri: data[0].thumbnail }}
-            style={styles.topBannerPoster}
-          />
+        <View style={styles.thumbnailContainer}>
+          <Image source={{ uri: data.thumbnail }} style={styles.thumbnail} />
           <LinearGradient
             colors={['rgba(0,0,0,0.4)', appColor.background]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 0.99 }}
-            style={styles.topBannerBlur}></LinearGradient>
-          <View style={styles.topBannerInfoContainer}>
-            <Text style={styles.topBannerTitle}>{setTitle(data[0])}</Text>
-            <View style={styles.topBannerRating}>
-              <StarRatingDisplay
-                rating={4}
-                maxStars={5}
-                starSize={20}
-                color={appColor.rating}
-                emptyColor={appColor.ratingEmpty}
-                starStyle={{ marginHorizontal: 0 }}
-              />
-              <Text style={styles.topBannerReview}>189개의 리뷰</Text>
-            </View>
+            style={styles.thumbnailBlur}
+          />
+          <View style={styles.thumbnailInfoContainer}>
+            <Text style={styles.topBannerTitle}>{setTitle(data)}</Text>
             <View style={styles.topBannerTag}>
-              {data[0].tags?.split(',').map((tag: any, index: number) => (
+              {data.tags?.split(',').map((tag: any, index: number) => (
                 <Text key={index} style={styles.tag}>
                   {tag}
                 </Text>
               ))}
             </View>
           </View>
-        </TouchableWithoutFeedback>
-        <RankingHorizontalView data={data} title="모든 경기" />
-        <RankingHorizontalView data={data} title="Worlds" tournament="Worlds" />
-        <RankingHorizontalView data={data} title="LCK" tournament="LCK" />
+        </View>
+        <View style={{ width: '100%', height: 1000 }}></View>
       </ScrollView>
       <AnimatedHeader
-        title="MASTERPIECE"
         height={headerHeight}
+        title={`${data.blueTeam} vs ${data.redTeam}`}
+        maxHeight={thumbnailHeight}
         animatedValue={scrollY}
-        maxHeight={topBannerHeight}
       />
     </View>
   );
@@ -133,11 +113,11 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: appColor.background,
   },
   header: {
     width: '100%',
-    height: headerHeight,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -145,17 +125,17 @@ const styles = StyleSheet.create({
     zIndex: 100,
     top: 0,
     paddingHorizontal: 20,
-    paddingTop: getStatusBarHeight(true) / 2,
     overflow: 'hidden',
+    paddingTop: getStatusBarHeight(true) / 2,
   },
-  topBanner: {},
-  topBannerPoster: {
+  thumbnailContainer: {},
+  thumbnail: {
     width: width,
-    height: topBannerHeight,
+    height: thumbnailHeight,
   },
-  topBannerBlur: {
+  thumbnailBlur: {
     width: '100%',
-    height: topBannerHeight,
+    height: thumbnailHeight,
     position: 'absolute',
     zIndex: 2,
     justifyContent: 'center',
@@ -163,16 +143,16 @@ const styles = StyleSheet.create({
   },
   topBannerTitle: {
     fontFamily: AppFontFamily.bold,
-    fontSize: 28,
+    fontSize: 27,
     color: appColor.white,
     textShadowColor: '#c1c1c1',
     textShadowOffset: { width: 0.1, height: 0.1 },
     textShadowRadius: 2,
     marginBottom: 10,
   },
-  topBannerInfoContainer: {
+  thumbnailInfoContainer: {
     width: '100%',
-    height: topBannerHeight,
+    height: thumbnailHeight,
     position: 'absolute',
     zIndex: 3,
     justifyContent: 'flex-end',
@@ -208,4 +188,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Ranking;
+export default MatchDetail;

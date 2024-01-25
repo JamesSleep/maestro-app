@@ -16,21 +16,21 @@
 		2150D4946A734170A1696E82 /* Eczar-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1BFF8D38826343CD835E7EE9 /* Eczar-ExtraBold.ttf */; };
 		24C26A6964584969A697EA46 /* NanumSquareRoundOTFEB.otf in Resources */ = {isa = PBXBuildFile; fileRef = 968B24C65B77450880506B70 /* NanumSquareRoundOTFEB.otf */; };
 		4A9D6902441543B484213B84 /* NanumSquareRoundL.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BBDF3FBEC6449FEA1BE5B99 /* NanumSquareRoundL.ttf */; };
+		4BB5BF53145146B18478749A /* NanumGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2A9493EABE234CE9A71C9C2B /* NanumGothicBold.ttf */; };
 		5FB2D75BDDB24F669337D5D1 /* NanumSquareRoundOTFB.otf in Resources */ = {isa = PBXBuildFile; fileRef = 941F94A4229644B888761FB3 /* NanumSquareRoundOTFB.otf */; };
 		671C4460B97E4876951B5528 /* Eczar-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FC527D7B1574A28951C1081 /* Eczar-Bold.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-maestro-maestroTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-maestro-maestroTests.a */; };
 		776F17DEFDF1437D860F02B7 /* NanumSquareRoundB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6239AF387BC847EA814E368D /* NanumSquareRoundB.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8B559A7068024B159EA5E13C /* NanumGothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9290B51F752F44C0A7491D70 /* NanumGothic.ttf */; };
+		A57E0EFA87644F25962B0FF1 /* NanumGothicLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9939DA51D0484CB5AE7E26BE /* NanumGothicLight.ttf */; };
 		A8E9C28D9F2F460689D2C690 /* NanumSquareRoundEB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08377BD5941F4D1CBDE5ECE3 /* NanumSquareRoundEB.ttf */; };
+		B495A9963A7A4CAA8E27AAF1 /* NanumGothicExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3423AFD4E7AA4BEAA15277BC /* NanumGothicExtraBold.ttf */; };
 		C8E0714A4CFD40A7AD8A76EC /* Eczar-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E531E3E95BF744459948E5FD /* Eczar-Regular.ttf */; };
 		CC6C70F7E8344FF7889259D3 /* NanumSquareRoundOTFL.otf in Resources */ = {isa = PBXBuildFile; fileRef = 04B9340E3F734F0E94B60DCD /* NanumSquareRoundOTFL.otf */; };
 		E8C2DA0480F74793B0E5CF05 /* Eczar-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B47216E50CBC4CADBD8DAAAD /* Eczar-SemiBold.ttf */; };
 		F05486FB0EE241819CACDEB2 /* NanumSquareRoundOTFR.otf in Resources */ = {isa = PBXBuildFile; fileRef = E179BD80E30C44CB81B7BEE7 /* NanumSquareRoundOTFR.otf */; };
 		F8C1853A8AA94CF79AB7E353 /* NanumSquareRoundR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8E791AF1CEB41EB867A9B52 /* NanumSquareRoundR.ttf */; };
-		8B559A7068024B159EA5E13C /* NanumGothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9290B51F752F44C0A7491D70 /* NanumGothic.ttf */; };
-		4BB5BF53145146B18478749A /* NanumGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2A9493EABE234CE9A71C9C2B /* NanumGothicBold.ttf */; };
-		B495A9963A7A4CAA8E27AAF1 /* NanumGothicExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3423AFD4E7AA4BEAA15277BC /* NanumGothicExtraBold.ttf */; };
-		A57E0EFA87644F25962B0FF1 /* NanumGothicLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9939DA51D0484CB5AE7E26BE /* NanumGothicLight.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +58,8 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = maestro/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-maestro-maestroTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-maestro-maestroTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BFF8D38826343CD835E7EE9 /* Eczar-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Eczar-ExtraBold.ttf"; path = "../fonts/Eczar-ExtraBold.ttf"; sourceTree = "<group>"; };
+		2A9493EABE234CE9A71C9C2B /* NanumGothicBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = NanumGothicBold.ttf; path = ../fonts/NanumGothicBold.ttf; sourceTree = "<group>"; };
+		3423AFD4E7AA4BEAA15277BC /* NanumGothicExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = NanumGothicExtraBold.ttf; path = ../fonts/NanumGothicExtraBold.ttf; sourceTree = "<group>"; };
 		3907B7932B61B07F00EE375A /* Eczar-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Eczar-Bold.ttf"; path = "../fonts/Eczar-Bold.ttf"; sourceTree = "<group>"; };
 		3907B7942B61B07F00EE375A /* NanumSquareRoundEB.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NanumSquareRoundEB.ttf; path = ../fonts/NanumSquareRoundEB.ttf; sourceTree = "<group>"; };
 		3907B7952B61B07F00EE375A /* NanumSquareRoundOTFL.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NanumSquareRoundOTFL.otf; path = ../fonts/NanumSquareRoundOTFL.otf; sourceTree = "<group>"; };
@@ -98,18 +100,16 @@
 		6239AF387BC847EA814E368D /* NanumSquareRoundB.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareRoundB.ttf; path = ../fonts/NanumSquareRoundB.ttf; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = maestro/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-maestro-maestroTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-maestro-maestroTests.release.xcconfig"; path = "Target Support Files/Pods-maestro-maestroTests/Pods-maestro-maestroTests.release.xcconfig"; sourceTree = "<group>"; };
+		9290B51F752F44C0A7491D70 /* NanumGothic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = NanumGothic.ttf; path = ../fonts/NanumGothic.ttf; sourceTree = "<group>"; };
 		941F94A4229644B888761FB3 /* NanumSquareRoundOTFB.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareRoundOTFB.otf; path = ../fonts/NanumSquareRoundOTFB.otf; sourceTree = "<group>"; };
 		96853D51CF8F4F15B7F7CE53 /* Eczar-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Eczar-Medium.ttf"; path = "../fonts/Eczar-Medium.ttf"; sourceTree = "<group>"; };
 		968B24C65B77450880506B70 /* NanumSquareRoundOTFEB.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareRoundOTFEB.otf; path = ../fonts/NanumSquareRoundOTFEB.otf; sourceTree = "<group>"; };
+		9939DA51D0484CB5AE7E26BE /* NanumGothicLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = NanumGothicLight.ttf; path = ../fonts/NanumGothicLight.ttf; sourceTree = "<group>"; };
 		B47216E50CBC4CADBD8DAAAD /* Eczar-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Eczar-SemiBold.ttf"; path = "../fonts/Eczar-SemiBold.ttf"; sourceTree = "<group>"; };
 		E179BD80E30C44CB81B7BEE7 /* NanumSquareRoundOTFR.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareRoundOTFR.otf; path = ../fonts/NanumSquareRoundOTFR.otf; sourceTree = "<group>"; };
 		E531E3E95BF744459948E5FD /* Eczar-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Eczar-Regular.ttf"; path = "../fonts/Eczar-Regular.ttf"; sourceTree = "<group>"; };
 		E8E791AF1CEB41EB867A9B52 /* NanumSquareRoundR.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumSquareRoundR.ttf; path = ../fonts/NanumSquareRoundR.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		9290B51F752F44C0A7491D70 /* NanumGothic.ttf */ = {isa = PBXFileReference; name = "NanumGothic.ttf"; path = "../fonts/NanumGothic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		2A9493EABE234CE9A71C9C2B /* NanumGothicBold.ttf */ = {isa = PBXFileReference; name = "NanumGothicBold.ttf"; path = "../fonts/NanumGothicBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		3423AFD4E7AA4BEAA15277BC /* NanumGothicExtraBold.ttf */ = {isa = PBXFileReference; name = "NanumGothicExtraBold.ttf"; path = "../fonts/NanumGothicExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		9939DA51D0484CB5AE7E26BE /* NanumGothicLight.ttf */ = {isa = PBXFileReference; name = "NanumGothicLight.ttf"; path = "../fonts/NanumGothicLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
