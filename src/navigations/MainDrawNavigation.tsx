@@ -12,6 +12,7 @@ import Favorites from 'src/pages/Favorites';
 import MyAccount from 'src/pages/MyAccount';
 import Notifications from 'src/pages/Notifications';
 import Ranking from 'src/pages/Ranking';
+import SideBar from 'src/components/SideBar';
 
 export type MainDrawParamList = {
   Ranking: undefined;
@@ -32,7 +33,15 @@ function MainDrawNavigation() {
   return (
     <Draw.Navigator
       initialRouteName="Ranking"
-      screenOptions={{ headerShown: false }}>
+      drawerContent={props => <SideBar {...props} />}
+      screenOptions={{
+        headerShown: false,
+        drawerType: 'slide',
+        overlayColor: 'transparent',
+        drawerStyle: {
+          backgroundColor: '#17171C',
+        },
+      }}>
       <Draw.Screen name="Ranking" component={Ranking} />
       <Draw.Screen name="Favorites" component={Favorites} />
       <Draw.Screen name="Notifications" component={Notifications} />

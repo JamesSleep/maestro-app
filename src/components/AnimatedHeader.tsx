@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0.1, height: 0.1 },
     shadowRadius: 5,
     elevation: 10,
-    backgroundColor: appColor.background,
+    backgroundColor: '#17171C',
     paddingTop: getStatusBarHeight(true) / 2,
   },
   title: {

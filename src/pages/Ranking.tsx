@@ -164,9 +164,6 @@ const styles = StyleSheet.create({
     fontFamily: AppFontFamily.bold,
     fontSize: 28,
     color: appColor.white,
-    textShadowColor: '#c1c1c1',
-    textShadowOffset: { width: 0.1, height: 0.1 },
-    textShadowRadius: 2,
     marginBottom: 10,
   },
   topBannerInfoContainer: {
