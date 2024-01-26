@@ -41,6 +41,7 @@ function MatchDetail({
   const queryClient = useQueryClient();
   const user = useRecoilValue(userState);
   const scrollY = useRef(new Animated.Value(0)).current;
+  const isRated = params.isRated;
   const [isRating, setIsRating] = useState(false);
   const [rating, setRating] = useState(0);
   const [isHeart, setIsHeart] = useState(params.isHeart);
@@ -65,6 +66,22 @@ function MatchDetail({
     ['likeMatch'],
     (query: { matchId: number; userId?: number }) =>
       axios.post(`${Config.API_URL}/match/like`, query),
+    {
+      onSuccess: response => {
+        queryClient.invalidateQueries(['getOneMatch', params.id]);
+        queryClient.invalidateQueries(['getAllMatches']);
+      },
+    },
+  );
+
+  const { mutate: reviewMutate, isLoading: isReviewMuteLoading } = useMutation(
+    ['reviewUpdate'],
+    (query: {
+      matchId: number;
+      userId: number;
+      score?: number;
+      content?: string;
+    }) => axios.post(`${Config.API_URL}/comment`, query),
     {
       onSuccess: response => {
         queryClient.invalidateQueries(['getOneMatch', params.id]);
@@ -182,15 +199,19 @@ function MatchDetail({
                   starStyle={{ marginHorizontal: 0 }}
                 />
                 <Text style={styles.rateScore}>
-                  8.1<Text style={styles.rateMaxScore}>{`/10`}</Text>
+                  {!data.score ? '0.0' : data.score.toFixed(1)}
+                  <Text style={styles.rateMaxScore}>{`/5`}</Text>
                 </Text>
-                <Text style={styles.reviewText}>189개의 평가</Text>
+                <Text
+                  style={
+                    styles.reviewText
+                  }>{`${data.comment.length}개의 평가`}</Text>
               </View>
               <Pressable
                 onPress={() => setIsRating(prev => !prev)}
                 style={[styles.matchInfoBlock]}>
                 <StarRatingDisplay
-                  rating={rating}
+                  rating={isRated ? 1 : 0}
                   maxStars={1}
                   starSize={30}
                   color={appColor.rating}
@@ -198,8 +219,13 @@ function MatchDetail({
                   starStyle={{ marginHorizontal: 0 }}
                 />
                 <Text style={styles.ratingText}>
-                  {rating > 0 ? rating.toFixed(1) : '평가하기'}
+                  {isRated
+                    ? data.comment
+                        .filter(comment => comment.user.id === user?.id)[0]
+                        .score.toFixed(1)
+                    : '평가하기'}
                 </Text>
+                {isRated && <Text style={styles.reviewText}>나의 평가</Text>}
               </Pressable>
             </>
           ) : (
@@ -210,13 +236,22 @@ function MatchDetail({
               ]}>
               <StarRating
                 rating={rating}
-                onChange={setRating}
+                onChange={rate => {
+                  setRating(rate);
+                }}
                 maxStars={5}
                 color={appColor.rating}
                 emptyColor={appColor.ratingEmpty}
                 starSize={40}
                 starStyle={{ marginHorizontal: 0 }}
-                onRatingEnd={() => setIsRating(prev => !prev)}
+                onRatingEnd={() => {
+                  setIsRating(prev => !prev);
+                  reviewMutate({
+                    matchId: params.id,
+                    userId: user?.id || 0,
+                    score: rating,
+                  });
+                }}
               />
             </View>
           )}

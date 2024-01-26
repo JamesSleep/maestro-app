@@ -30,7 +30,10 @@ function RankingCard({ match }: { match: Match }) {
       onPress={() =>
         navigation.navigate('MatchDetail', {
           id: match.id,
-          isHeart: match.user.filter(_user => _user.id !== user?.id).length > 0,
+          isHeart: match.user.filter(_user => _user.id === user?.id).length > 0,
+          isRated:
+            match.comment.filter(_comment => _comment.user.id === user?.id)
+              .length > 0,
         })
       }>
       <View style={styles.posterBlur}></View>
@@ -45,14 +48,15 @@ function RankingCard({ match }: { match: Match }) {
       <Text style={styles.matchTitle}>{setTitle(match)}</Text>
       <View style={styles.matchRating}>
         <StarRatingDisplay
-          rating={4}
+          rating={match.score}
           maxStars={5}
           starSize={12}
           color={appColor.white}
           emptyColor={appColor.ratingEmpty}
           starStyle={{ marginHorizontal: 0 }}
         />
-        <Text style={styles.matchReview}>189개의 평가</Text>
+        <Text
+          style={styles.matchReview}>{`${match.comment.length}개의 평가`}</Text>
       </View>
     </TouchableWithoutFeedback>
   );

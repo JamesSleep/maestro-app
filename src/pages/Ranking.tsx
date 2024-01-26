@@ -15,7 +15,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { getStatusBarHeight } from 'react-native-safearea-height';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useRecoilState } from 'recoil';
 import { Match, User } from 'src/api/DataType';
 import AnimatedHeader from 'src/components/AnimatedHeader';
@@ -104,7 +104,11 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
             navigation.navigate('MatchDetail', {
               id: data[0].id,
               isHeart:
-                data[0].user.filter(_user => _user.id !== user?.id).length > 0,
+                data[0].user.filter(_user => _user.id === user?.id).length > 0,
+              isRated:
+                data[0].comment.filter(
+                  _comment => _comment.user.id === user?.id,
+                ).length > 0,
             })
           }
           style={styles.topBanner}>
@@ -121,14 +125,17 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
             <Text style={styles.topBannerTitle}>{setTitle(data[0])}</Text>
             <View style={styles.topBannerRating}>
               <StarRatingDisplay
-                rating={4}
+                rating={data[0].score}
                 maxStars={5}
                 starSize={20}
                 color={appColor.rating}
                 emptyColor={appColor.ratingEmpty}
                 starStyle={{ marginHorizontal: 0 }}
               />
-              <Text style={styles.topBannerReview}>189개의 평가</Text>
+              <Text
+                style={
+                  styles.topBannerReview
+                }>{`${data[0].comment.length}개의 평가`}</Text>
             </View>
             <View style={styles.topBannerTag}>
               {data[0].tags?.split(',').map((tag: any, index: number) => (

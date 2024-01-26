@@ -6,6 +6,7 @@ export interface Match {
   redTeam: string;
   tournament: string;
   round: string;
+  score: number;
   season?: string;
   matchDate: string;
   tags?: string;
@@ -14,6 +15,7 @@ export interface Match {
   poster: string;
   players: Player[];
   user: User[];
+  comment: Comment[];
 }
 
 export interface Player {
@@ -32,4 +34,5 @@ export interface Comment {
   id: number;
   content: string;
   score: number;
+  user: User;
 }

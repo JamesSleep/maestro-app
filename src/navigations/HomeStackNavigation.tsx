@@ -8,7 +8,7 @@ import ProfileIcon from 'src/pages/ProfileIcon';
 
 export type HomeStackParamList = {
   Main: undefined;
-  MatchDetail: { id: number; isHeart: boolean };
+  MatchDetail: { id: number; isHeart: boolean; isRated: boolean };
   ProfileIcon: undefined;
 };
 
