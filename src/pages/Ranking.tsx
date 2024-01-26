@@ -16,10 +16,12 @@ import { getStatusBarHeight } from 'react-native-safearea-height';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useQuery } from 'react-query';
-import { Match } from 'src/api/DataType';
+import { useRecoilState } from 'recoil';
+import { Match, User } from 'src/api/DataType';
 import AnimatedHeader from 'src/components/AnimatedHeader';
 import RankingHorizontalView from 'src/components/RankingHorizontalView';
 import { MainDrawScreenProps } from 'src/navigations/MainDrawNavigation';
+import { userState } from 'src/store/recoilState';
 import { appColor } from 'src/theme/color';
 import { AppFontFamily } from 'src/theme/font';
 import { ApiError } from 'src/types/api-error';
@@ -31,6 +33,21 @@ const headerHeight = 60 + getStatusBarHeight(true) / 2;
 
 function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
   const scrollY = useRef(new Animated.Value(0)).current;
+  const [user, setUser] = useRecoilState(userState);
+
+  const userInfoQuery = useQuery(
+    ['getUserInfo'],
+    () => axios.get(`${Config.API_URL}/user/current`),
+    {
+      onSuccess: response => {
+        const userData: User = response.data.data;
+        setUser(userData);
+        if (!userData.profileIcon) {
+          navigation.replace('ProfileIcon');
+        }
+      },
+    },
+  );
 
   const { data, isLoading } = useQuery(
     ['getAllMatches'],

@@ -184,10 +184,11 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   title: {
-    fontSize: 60,
+    fontSize: 40,
     fontFamily: AppFontFamily.extraBold,
     color: 'rgba(255, 242, 248, 1)',
     textAlign: 'center',
+    marginBottom: 10,
   },
   subTitle: {
     fontSize: 30,

@@ -24,7 +24,7 @@ export interface Player {
 export interface User {
   id: number;
   nickname: string;
-  profile: string;
+  profileIcon: number | null;
 }
 
 export interface Comment {

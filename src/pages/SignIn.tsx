@@ -20,7 +20,7 @@ import DismissKeyboardView from 'src/components/DismissKeyboardView';
 import { RootStackParamList } from 'src/navigations/RootStackNavigation';
 import { ApiError } from 'src/types/api-error';
 import { showToastError } from 'src/utils/toastMessage';
-import { tokenState } from 'src/store/recoilState';
+import { tokenState, userState } from 'src/store/recoilState';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const width = Dimensions.get('window').width;
@@ -30,6 +30,7 @@ type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
 
 function SignIn({ navigation }: SignInScreenProps) {
   const [token, setToken] = useRecoilState(tokenState);
+  const [user, setUser] = useRecoilState(userState);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const emailRef = useRef<TextInput | null>(null);
@@ -45,6 +46,7 @@ function SignIn({ navigation }: SignInScreenProps) {
           data: { data },
         } = response;
         setToken(data.token);
+        setUser(data.user);
         await AsyncStorage.setItem('token', JSON.stringify(data.token));
         axios.interceptors.request.use(config => {
           config.headers.Authorization = 'Bearer ' + token;

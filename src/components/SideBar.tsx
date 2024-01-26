@@ -3,7 +3,8 @@ import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { getStatusBarHeight } from 'react-native-safearea-height';
 import { useRecoilState } from 'recoil';
-import { tokenState } from 'src/store/recoilState';
+import { PROFILE_ARRAY } from 'src/constants/profileArray';
+import { tokenState, userState } from 'src/store/recoilState';
 import { appColor } from 'src/theme/color';
 import { AppFontFamily } from 'src/theme/font';
 
@@ -11,14 +12,16 @@ const RouteKR: any = [
   { name: 'League of Legends' },
   { name: '컬렉션' },
   { name: '알림' },
-  { name: '내 정보' },
+  { name: '설정' },
 ];
 
 function SideBar({ state, navigation }: DrawerContentComponentProps) {
   const [token, setToken] = useRecoilState(tokenState);
+  const [user, setUser] = useRecoilState(userState);
 
   const logout = async () => {
     await AsyncStorage.removeItem('token');
+    setUser(null);
     setToken('');
   };
 
@@ -27,9 +30,11 @@ function SideBar({ state, navigation }: DrawerContentComponentProps) {
       <View style={styles.profileContainer}>
         <Image
           style={styles.picture}
-          source={require('src/assets/profile4.png')}
+          source={
+            PROFILE_ARRAY[user && user.profileIcon ? user.profileIcon : 0]
+          }
         />
-        <Text style={styles.nickname}>James Sleep</Text>
+        <Text style={styles.nickname}>{user?.nickname}</Text>
       </View>
       <View style={styles.menuContainer}>
         {state.routes.map((route, index) => (
