@@ -2,12 +2,15 @@ import { useNavigation } from '@react-navigation/native';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
+import { useRecoilValue } from 'recoil';
 import { Match } from 'src/api/DataType';
 import { HomeStackScreenProps } from 'src/navigations/HomeStackNavigation';
+import { userState } from 'src/store/recoilState';
 import { appColor } from 'src/theme/color';
 import { AppFontFamily } from 'src/theme/font';
 
 function RankingCard({ match }: { match: Match }) {
+  const user = useRecoilValue(userState);
   const navigation =
     useNavigation<HomeStackScreenProps<'Main'>['navigation']>();
   const setTitle = (matchData: any) => {
@@ -24,7 +27,12 @@ function RankingCard({ match }: { match: Match }) {
     <TouchableWithoutFeedback
       key={match.id}
       style={styles.match}
-      onPress={() => navigation.navigate('MatchDetail', { id: match.id })}>
+      onPress={() =>
+        navigation.navigate('MatchDetail', {
+          id: match.id,
+          isHeart: match.user.filter(_user => _user.id !== user?.id).length > 0,
+        })
+      }>
       <View style={styles.posterBlur}></View>
       <Image
         source={
@@ -44,7 +52,7 @@ function RankingCard({ match }: { match: Match }) {
           emptyColor={appColor.ratingEmpty}
           starStyle={{ marginHorizontal: 0 }}
         />
-        <Text style={styles.matchReview}>189개의 리뷰</Text>
+        <Text style={styles.matchReview}>189개의 평가</Text>
       </View>
     </TouchableWithoutFeedback>
   );

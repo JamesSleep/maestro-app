@@ -16,13 +16,15 @@ import { getStatusBarHeight } from 'react-native-safearea-height';
 import StarRating, { StarRatingDisplay } from 'react-native-star-rating-widget';
 import Icon from 'react-native-vector-icons/Ionicons';
 import YoutubeIframe from 'react-native-youtube-iframe';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useRecoilValue } from 'recoil';
 import { Match } from 'src/api/DataType';
 import AnimatedHeader from 'src/components/AnimatedHeader';
 import Divider from 'src/components/Divider';
 import PlayerCard from 'src/components/PlayerCard';
 import ReviewCard from 'src/components/ReviewCard';
 import { HomeStackScreenProps } from 'src/navigations/HomeStackNavigation';
+import { userState } from 'src/store/recoilState';
 import { appColor } from 'src/theme/color';
 import { AppFontFamily } from 'src/theme/font';
 import { ApiError } from 'src/types/api-error';
@@ -36,9 +38,12 @@ function MatchDetail({
   navigation,
   route: { params },
 }: HomeStackScreenProps<'MatchDetail'>) {
+  const queryClient = useQueryClient();
+  const user = useRecoilValue(userState);
   const scrollY = useRef(new Animated.Value(0)).current;
   const [isRating, setIsRating] = useState(false);
   const [rating, setRating] = useState(0);
+  const [isHeart, setIsHeart] = useState(params.isHeart);
 
   const { data, isLoading } = useQuery(
     ['getOneMatch', params.id],
@@ -52,6 +57,17 @@ function MatchDetail({
       select: response => {
         const match: Match = response.data.data;
         return match;
+      },
+    },
+  );
+
+  const { mutate, isLoading: isMuteLoading } = useMutation(
+    ['likeMatch'],
+    (query: { matchId: number; userId?: number }) =>
+      axios.post(`${Config.API_URL}/match/like`, query),
+    {
+      onSuccess: response => {
+        queryClient.invalidateQueries(['getOneMatch', params.id]);
       },
     },
   );
@@ -85,7 +101,17 @@ function MatchDetail({
           color={appColor.white}
           onPress={() => navigation.goBack()}
         />
-        <Icon name="heart-outline" size={25} color={appColor.white} />
+        <Icon
+          name={isHeart ? 'heart' : 'heart-outline'}
+          size={25}
+          color={isHeart ? appColor.rating : appColor.white}
+          onPress={() => {
+            if (!isMuteLoading) {
+              setIsHeart(prev => !prev);
+              mutate({ matchId: params.id, userId: user?.id });
+            }
+          }}
+        />
       </View>
       <ScrollView
         bounces={false}
@@ -158,7 +184,7 @@ function MatchDetail({
                 <Text style={styles.rateScore}>
                   8.1<Text style={styles.rateMaxScore}>{`/10`}</Text>
                 </Text>
-                <Text style={styles.reviewText}>189개의 리뷰</Text>
+                <Text style={styles.reviewText}>189개의 평가</Text>
               </View>
               <Pressable
                 onPress={() => setIsRating(prev => !prev)}

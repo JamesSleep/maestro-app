@@ -100,7 +100,13 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
           { useNativeDriver: false },
         )}>
         <TouchableWithoutFeedback
-          onPress={() => navigation.navigate('MatchDetail', { id: data[0].id })}
+          onPress={() =>
+            navigation.navigate('MatchDetail', {
+              id: data[0].id,
+              isHeart:
+                data[0].user.filter(_user => _user.id !== user?.id).length > 0,
+            })
+          }
           style={styles.topBanner}>
           <Image
             source={{ uri: data[0].thumbnail }}
@@ -122,7 +128,7 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
                 emptyColor={appColor.ratingEmpty}
                 starStyle={{ marginHorizontal: 0 }}
               />
-              <Text style={styles.topBannerReview}>189개의 리뷰</Text>
+              <Text style={styles.topBannerReview}>189개의 평가</Text>
             </View>
             <View style={styles.topBannerTag}>
               {data[0].tags?.split(',').map((tag: any, index: number) => (

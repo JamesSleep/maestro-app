@@ -13,6 +13,7 @@ export interface Match {
   thumbnail: string;
   poster: string;
   players: Player[];
+  user: User[];
 }
 
 export interface Player {
