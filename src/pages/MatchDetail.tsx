@@ -11,6 +11,7 @@ import {
   Pressable,
 } from 'react-native';
 import Config from 'react-native-config';
+import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import { getStatusBarHeight } from 'react-native-safearea-height';
 import StarRating, { StarRatingDisplay } from 'react-native-star-rating-widget';
@@ -21,6 +22,7 @@ import { useRecoilValue } from 'recoil';
 import { Match } from 'src/api/DataType';
 import AnimatedHeader from 'src/components/AnimatedHeader';
 import Divider from 'src/components/Divider';
+import GalleryModal from 'src/components/GalleryModal';
 import PlayerCard from 'src/components/PlayerCard';
 import ReviewCard from 'src/components/ReviewCard';
 import { HomeStackScreenProps } from 'src/navigations/HomeStackNavigation';
@@ -45,6 +47,8 @@ function MatchDetail({
   const [isRating, setIsRating] = useState(false);
   const [rating, setRating] = useState(0);
   const [isHeart, setIsHeart] = useState(params.isHeart);
+  const [visible, setVisible] = useState(false);
+  const [imageIndex, setImageIndex] = useState(0);
 
   const { data, isLoading } = useQuery(
     ['getOneMatch', params.id],
@@ -140,7 +144,7 @@ function MatchDetail({
           { useNativeDriver: false },
         )}>
         <View style={styles.thumbnailContainer}>
-          <Image
+          <FastImage
             source={
               data.thumbnail
                 ? { uri: data.thumbnail }
@@ -258,7 +262,7 @@ function MatchDetail({
         </View>
         <Divider />
         <View style={styles.posterContainer}>
-          <Image
+          <FastImage
             source={
               data.poster
                 ? { uri: data.poster }
@@ -293,6 +297,19 @@ function MatchDetail({
           </View>
         </View>
         <Divider />
+        <View style={styles.potgContainer}>
+          <Text style={[styles.columnTitle, { marginBottom: 0 }]}>
+            Play of The Game
+          </Text>
+          <FastImage
+            style={{ width: '100%', height: 240 }}
+            source={{
+              uri: data.potg,
+            }}
+            resizeMode={FastImage.resizeMode.contain}
+          />
+        </View>
+        <Divider />
         <View style={styles.highlightContainer}>
           <Text style={styles.columnTitle}>하이라이트</Text>
           <YoutubeIframe height={200} videoId={data.videoLink} />
@@ -308,6 +325,31 @@ function MatchDetail({
             contentContainerStyle={{ paddingHorizontal: 10 }}>
             {data.players.map(player => (
               <PlayerCard key={player.id} player={player} />
+            ))}
+          </ScrollView>
+        </View>
+        <Divider />
+        <View style={styles.lineupContainer}>
+          <Text style={[styles.columnTitle, { paddingLeft: 20 }]}>갤러리</Text>
+          <ScrollView
+            horizontal
+            bounces={false}
+            overScrollMode="never"
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ paddingHorizontal: 10 }}>
+            {data.gallery.map((photo, index) => (
+              <Pressable
+                key={photo.id}
+                onPress={() => {
+                  setVisible(true);
+                  setImageIndex(index);
+                }}
+                style={{ marginHorizontal: 10 }}>
+                <FastImage
+                  style={{ width: 150, height: 100, borderRadius: 10 }}
+                  source={{ uri: photo.uri }}
+                />
+              </Pressable>
             ))}
           </ScrollView>
         </View>
@@ -333,6 +375,12 @@ function MatchDetail({
           <Text style={styles.reviewButtonText}>리뷰 작성</Text>
         </LinearGradient>
       </ScrollView>
+      <GalleryModal
+        initialIndex={imageIndex}
+        item={data.gallery.map(photho => photho.uri)}
+        onClose={() => setVisible(false)}
+        visible={visible}
+      />
       <AnimatedHeader
         height={headerHeight}
         title={`${data.blueTeam} vs ${data.redTeam}`}
@@ -475,6 +523,11 @@ const styles = StyleSheet.create({
     fontFamily: AppFontFamily.bold,
     fontSize: 13,
     color: appColor.white,
+  },
+  potgContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 30,
+    paddingBottom: 10,
   },
   highlightContainer: {
     paddingHorizontal: 20,

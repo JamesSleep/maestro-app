@@ -16,6 +16,8 @@ export interface Match {
   players: Player[];
   user: User[];
   comment: Comment[];
+  gallery: Gallery[];
+  potg: string;
 }
 
 export interface Player {
@@ -35,4 +37,9 @@ export interface Comment {
   content: string;
   score: number;
   user: User;
+}
+
+export interface Gallery {
+  id: number;
+  uri: string;
 }

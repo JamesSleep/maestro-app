@@ -8,3 +8,4 @@
 - 첫로그인시 프로필아이콘 설정가능하게하기 (기본프로필사진목록 넣어주기 롤챔프사진)
 - empty페이지 만들기
 - no image 개선
+- react native motion splash
