@@ -4,70 +4,50 @@ import { Comment, User } from 'src/api/DataType';
 import { appColor } from 'src/theme/color';
 import { AppFontFamily } from 'src/theme/font';
 import Divider from './Divider';
-
-const MOCK_USER = [
-  { id: 1, nickname: 'Ahri', profile: require('src/assets/profile4.png') },
-  {
-    id: 2,
-    nickname: 'James Sleep',
-    profile: require('src/assets/profile5.png'),
-  },
-  {
-    id: 3,
-    nickname: '마라탕후루',
-    profile: require('src/assets/profile7.png'),
-  },
-];
-
-const MOCK_COMMENT: Comment[] = [
-  {
-    id: 1,
-    score: 4.5,
-    content: `Might as well get right to it, then. At the risk of sounding like a contrarian, I did not love this film. Do I love elements of this? Yes. `,
-  },
-  {
-    id: 2,
-    score: 4,
-    content: `I had very high expectations for Christopher Nolan's latest offering as I'm a big fan of his previous work but Dunkirk is the first of his films I really don't care for. `,
-  },
-  {
-    id: 3,
-    score: 5,
-    content: `Direction is okay for an otherwise quite boring movie. The only thing that saves this movie is that it's not too long, which makes it not too painful to watch.`,
-  },
-];
+import { useRecoilValue } from 'recoil';
+import { userState } from 'src/store/recoilState';
+import ProfileIcon from 'src/pages/ProfileIcon';
+import { PROFILE_ARRAY } from 'src/constants/profileArray';
 
 function ReviewCard({
-  /* review, */ index,
+  index,
   length,
+  comment,
 }: {
-  /* review: Comment, */ index: number;
+  index: number;
   length: number;
+  comment: Comment;
 }) {
+  const user = useRecoilValue(userState);
   return (
     <>
       <View style={styles.container}>
         <View style={styles.topContainer}>
           <View style={styles.profileContainer}>
-            <Image style={styles.profile} source={MOCK_USER[index].profile} />
+            <Image
+              style={styles.profile}
+              source={PROFILE_ARRAY[user?.profileIcon || 0]}
+            />
           </View>
           <View style={{ flex: 4 }}>
             <View style={styles.nameRow}>
-              <Text style={styles.nickname}>{MOCK_USER[index].nickname}</Text>
-              <StarRatingDisplay
-                rating={MOCK_COMMENT[index].score}
-                maxStars={5}
-                color={appColor.rating}
-                emptyColor={appColor.ratingEmpty}
-                starSize={20}
-                starStyle={{ marginHorizontal: 0 }}
-              />
+              <Text style={styles.nickname}>{user?.nickname}</Text>
+              {comment.score > 0 && (
+                <StarRatingDisplay
+                  rating={comment.score}
+                  maxStars={5}
+                  color={appColor.rating}
+                  emptyColor={appColor.ratingEmpty}
+                  starSize={20}
+                  starStyle={{ marginHorizontal: 0 }}
+                />
+              )}
             </View>
             <Text style={styles.dateAgo}>1일전</Text>
           </View>
         </View>
         <View style={styles.bottomContainer}>
-          <Text style={styles.content}>{MOCK_COMMENT[index].content}</Text>
+          <Text style={styles.content}>{comment.content}</Text>
         </View>
       </View>
       {index < length - 1 && <Divider />}

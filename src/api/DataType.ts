@@ -37,6 +37,8 @@ export interface Comment {
   content: string;
   score: number;
   user: User;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Gallery {

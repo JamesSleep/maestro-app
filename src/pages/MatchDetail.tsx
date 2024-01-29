@@ -9,6 +9,7 @@ import {
   View,
   Animated,
   Pressable,
+  Modal,
 } from 'react-native';
 import Config from 'react-native-config';
 import FastImage from 'react-native-fast-image';
@@ -21,6 +22,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { Match } from 'src/api/DataType';
 import AnimatedHeader from 'src/components/AnimatedHeader';
+import CommentModal from 'src/components/CommentModal';
 import Divider from 'src/components/Divider';
 import GalleryModal from 'src/components/GalleryModal';
 import PlayerCard from 'src/components/PlayerCard';
@@ -43,12 +45,13 @@ function MatchDetail({
   const queryClient = useQueryClient();
   const user = useRecoilValue(userState);
   const scrollY = useRef(new Animated.Value(0)).current;
-  const isRated = params.isRated;
+  const [isRated, setIsRated] = useState(params.isRated);
   const [isRating, setIsRating] = useState(false);
   const [rating, setRating] = useState(0);
   const [isHeart, setIsHeart] = useState(params.isHeart);
   const [visible, setVisible] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
+  const [commentVisible, setCommentVisible] = useState(false);
 
   const { data, isLoading } = useQuery(
     ['getOneMatch', params.id],
@@ -89,6 +92,7 @@ function MatchDetail({
     {
       onSuccess: response => {
         queryClient.invalidateQueries(['getOneMatch', params.id]);
+        queryClient.invalidateQueries(['getAllMatches']);
       },
     },
   );
@@ -215,7 +219,12 @@ function MatchDetail({
                 onPress={() => setIsRating(prev => !prev)}
                 style={[styles.matchInfoBlock]}>
                 <StarRatingDisplay
-                  rating={isRated ? 1 : 0}
+                  rating={
+                    data.comment.filter(comment => comment.user.id === user?.id)
+                      .length > 0
+                      ? 1
+                      : 0
+                  }
                   maxStars={1}
                   starSize={30}
                   color={appColor.rating}
@@ -223,13 +232,17 @@ function MatchDetail({
                   starStyle={{ marginHorizontal: 0 }}
                 />
                 <Text style={styles.ratingText}>
-                  {isRated
+                  {data.comment.filter(comment => comment.user.id === user?.id)
+                    .length > 0
                     ? data.comment
                         .filter(comment => comment.user.id === user?.id)[0]
                         .score.toFixed(1)
                     : '평가하기'}
                 </Text>
-                {isRated && <Text style={styles.reviewText}>나의 평가</Text>}
+                {data.comment.filter(comment => comment.user.id === user?.id)
+                  .length > 0 && (
+                  <Text style={styles.reviewText}>나의 평가</Text>
+                )}
               </Pressable>
             </>
           ) : (
@@ -249,6 +262,7 @@ function MatchDetail({
                 starSize={40}
                 starStyle={{ marginHorizontal: 0 }}
                 onRatingEnd={() => {
+                  setIsRated(prev => !prev);
                   setIsRating(prev => !prev);
                   reviewMutate({
                     matchId: params.id,
@@ -328,58 +342,80 @@ function MatchDetail({
             ))}
           </ScrollView>
         </View>
-        <Divider />
-        <View style={styles.lineupContainer}>
-          <Text style={[styles.columnTitle, { paddingLeft: 20 }]}>갤러리</Text>
-          <ScrollView
-            horizontal
-            bounces={false}
-            overScrollMode="never"
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingHorizontal: 10 }}>
-            {data.gallery.map((photo, index) => (
-              <Pressable
-                key={photo.id}
-                onPress={() => {
-                  setVisible(true);
-                  setImageIndex(index);
-                }}
-                style={{ marginHorizontal: 10 }}>
-                <FastImage
-                  style={{ width: 150, height: 100, borderRadius: 10 }}
-                  source={{ uri: photo.uri }}
+        {data.gallery.length > 0 && (
+          <>
+            <Divider />
+            <View style={styles.lineupContainer}>
+              <Text style={[styles.columnTitle, { paddingLeft: 20 }]}>
+                갤러리
+              </Text>
+              <ScrollView
+                horizontal
+                bounces={false}
+                overScrollMode="never"
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ paddingHorizontal: 10 }}>
+                {data.gallery.map((photo, index) => (
+                  <Pressable
+                    key={photo.id}
+                    onPress={() => {
+                      setVisible(true);
+                      setImageIndex(index);
+                    }}
+                    style={{ marginHorizontal: 10 }}>
+                    <FastImage
+                      style={{ width: 150, height: 100, borderRadius: 10 }}
+                      source={{ uri: photo.uri }}
+                    />
+                  </Pressable>
+                ))}
+              </ScrollView>
+            </View>
+          </>
+        )}
+        {data.comment.filter(comment => !!comment.content).length > 0 && (
+          <>
+            <Divider />
+            <View style={styles.reviewContainer}>
+              <View style={styles.reviewHeader}>
+                <Text style={styles.columnTitle}>코멘트</Text>
+                <Text style={styles.columnBtnText}>전체보기</Text>
+              </View>
+              {data.comment.map((comment, index) => (
+                <ReviewCard
+                  key={index}
+                  length={data.comment.length}
+                  index={index}
+                  comment={comment}
                 />
-              </Pressable>
-            ))}
-          </ScrollView>
-        </View>
-        <Divider />
-        <View style={styles.reviewContainer}>
-          <View style={styles.reviewHeader}>
-            <Text style={styles.columnTitle}>리뷰</Text>
-            <Text style={styles.columnBtnText}>전체보기</Text>
-          </View>
-          <ReviewCard length={3} index={0} />
-          <ReviewCard length={3} index={1} />
-          <ReviewCard length={3} index={2} />
-        </View>
-        <LinearGradient
-          useAngle
-          angle={120}
-          angleCenter={{ x: 0.5, y: 1 }}
-          colors={['#FD8F61', '#F84B62', '#74398A']}
-          start={{ x: 0.0, y: 0.0 }}
-          end={{ x: 1, y: 1 }}
-          locations={[0.1, 0.5, 1]}
-          style={styles.reviewButton}>
-          <Text style={styles.reviewButtonText}>리뷰 작성</Text>
-        </LinearGradient>
+              ))}
+            </View>
+          </>
+        )}
+        <Pressable onPress={() => setCommentVisible(true)}>
+          <LinearGradient
+            useAngle
+            angle={120}
+            angleCenter={{ x: 0.5, y: 1 }}
+            colors={['#FD8F61', '#F84B62', '#74398A']}
+            start={{ x: 0.0, y: 0.0 }}
+            end={{ x: 1, y: 1 }}
+            locations={[0.1, 0.5, 1]}
+            style={styles.reviewButton}>
+            <Text style={styles.reviewButtonText}>코멘트 작성</Text>
+          </LinearGradient>
+        </Pressable>
       </ScrollView>
       <GalleryModal
         initialIndex={imageIndex}
         item={data.gallery.map(photho => photho.uri)}
         onClose={() => setVisible(false)}
         visible={visible}
+      />
+      <CommentModal
+        visible={commentVisible}
+        onClose={() => setCommentVisible(false)}
+        matchId={params.id}
       />
       <AnimatedHeader
         height={headerHeight}
