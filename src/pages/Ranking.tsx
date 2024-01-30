@@ -4,28 +4,27 @@ import {
   Animated,
   Dimensions,
   Image,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import Config from 'react-native-config';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { getStatusBarHeight } from 'react-native-safearea-height';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useMutation, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import { useRecoilState } from 'recoil';
-import { Match, User } from 'src/api/DataType';
+import { Match } from 'src/api/DataType';
+import { fetchApi } from 'src/api/fetchApi';
 import AnimatedHeader from 'src/components/AnimatedHeader';
 import RankingHorizontalView from 'src/components/RankingHorizontalView';
 import { MainDrawScreenProps } from 'src/navigations/MainDrawNavigation';
 import { userState } from 'src/store/recoilState';
 import { appColor } from 'src/theme/color';
 import { AppFontFamily } from 'src/theme/font';
-import { ApiError } from 'src/types/api-error';
-import { showToastError } from 'src/utils/toastMessage';
 
 const width = Dimensions.get('window').width;
 const topBannerHeight = 400;
@@ -35,28 +34,14 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
   const scrollY = useRef(new Animated.Value(0)).current;
   const [user, setUser] = useRecoilState(userState);
 
-  const userInfoQuery = useQuery(
-    ['getUserInfo'],
-    () => axios.get(`${Config.API_URL}/user/current`),
-    {
-      onSuccess: response => {
-        const userData: User = response.data.data;
-        setUser(userData);
-        if (!userData.profileIcon) {
-          navigation.replace('ProfileIcon');
-        }
-      },
-    },
-  );
-
   const { data, isLoading } = useQuery(
     ['getAllMatches'],
-    () => axios.get(`${Config.API_URL}/match`),
+    () => fetchApi.get(`/match`),
     {
       onError: error => {
-        const errorResponse = (error as AxiosError).response;
+        /*  const errorResponse = (error as AxiosError).response;
         const { message } = errorResponse?.data as ApiError;
-        showToastError('네트워크 오류', message);
+        showToastError('네트워크 오류', message); */
       },
       select: response => {
         const matches: Match[] = response.data.data;
@@ -82,13 +67,28 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Icon
-          name="menu"
-          size={25}
-          color={appColor.white}
+        <Pressable
           onPress={() => navigation.toggleDrawer()}
-        />
-        <Icon name="search" size={25} color={appColor.white} />
+          style={{
+            width: 70,
+            height: 70,
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            paddingLeft: 20,
+          }}>
+          <Icon name="menu" size={25} color={appColor.white} />
+        </Pressable>
+        <Pressable
+          onPress={() => navigation.toggleDrawer()}
+          style={{
+            width: 70,
+            height: 70,
+            justifyContent: 'center',
+            alignItems: 'flex-end',
+            paddingRight: 20,
+          }}>
+          <Icon name="search" size={25} color={appColor.white} />
+        </Pressable>
       </View>
       <ScrollView
         bounces={false}
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 100,
     top: 0,
-    paddingHorizontal: 20,
+    //paddingHorizontal: 20,
     paddingTop: getStatusBarHeight(true) / 2,
     overflow: 'hidden',
   },

@@ -8,25 +8,26 @@ import {
   View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import Config from 'react-native-config';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useRecoilState } from 'recoil';
 
 import { AppFontFamily } from 'src/theme/font';
 import DismissKeyboardView from 'src/components/DismissKeyboardView';
-import { RootStackParamList } from 'src/navigations/RootStackNavigation';
 import { ApiError } from 'src/types/api-error';
 import { showToastError } from 'src/utils/toastMessage';
 import { tokenState, userState } from 'src/store/recoilState';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { HomeStackParamList } from 'src/navigations/HomeStackNavigation';
+import { fetchApi } from 'src/api/fetchApi';
+import { User } from 'src/api/DataType';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
-type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
+type SignInScreenProps = NativeStackScreenProps<HomeStackParamList, 'SignIn'>;
 
 function SignIn({ navigation }: SignInScreenProps) {
   const [token, setToken] = useRecoilState(tokenState);
@@ -39,24 +40,37 @@ function SignIn({ navigation }: SignInScreenProps) {
   const { mutate, isLoading } = useMutation(
     ['signIn'],
     (query: { email: string; password: string }) =>
-      axios.post(`${Config.API_URL}/user/login`, query),
+      fetchApi.post(`/user/login`, query),
     {
       onSuccess: async response => {
         const {
           data: { data },
         } = response;
         setToken(data.token);
-        setUser(data.user);
         await AsyncStorage.setItem('token', JSON.stringify(data.token));
-        axios.interceptors.request.use(config => {
-          config.headers.Authorization = 'Bearer ' + token;
-          return config;
-        });
+        fetchApi.defaults.headers.Authorization = 'Bearer ' + data.token;
       },
       onError: error => {
         const errorResponse = (error as AxiosError).response;
         const { message } = errorResponse?.data as ApiError;
         showToastError('로그인실패', message);
+      },
+    },
+  );
+
+  const userInfoQuery = useQuery(
+    ['getUserInfo'],
+    () => fetchApi.get(`/user/current`),
+    {
+      enabled: !isLoading && !!token,
+      onSuccess: response => {
+        //console.log(response);
+        const userData: User = response.data.data;
+        setUser(userData);
+        if (!userData.profileIcon) {
+          navigation.replace('ProfileIcon');
+        }
+        navigation.replace('Main');
       },
     },
   );
@@ -75,6 +89,19 @@ function SignIn({ navigation }: SignInScreenProps) {
   const toSignUp = useCallback(() => {
     navigation.navigate('SignUp');
   }, [navigation]);
+
+  const getToken = async () => {
+    const storeToken = await AsyncStorage.getItem('token');
+    if (storeToken) {
+      const savedToken = JSON.parse(storeToken);
+      setToken(savedToken);
+      fetchApi.defaults.headers.Authorization = 'Bearer ' + savedToken;
+    }
+  };
+
+  useEffect(() => {
+    getToken();
+  }, []);
 
   return (
     <DismissKeyboardView bounce={false} scrollEnabled={false}>

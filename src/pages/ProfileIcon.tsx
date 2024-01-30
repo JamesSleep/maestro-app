@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { useState } from 'react';
 import {
   Dimensions,
@@ -9,11 +9,11 @@ import {
   Text,
   View,
 } from 'react-native';
-import Config from 'react-native-config';
 import LinearGradient from 'react-native-linear-gradient';
 import { getStatusBarHeight } from 'react-native-safearea-height';
 import { useMutation, useQueryClient } from 'react-query';
 import { useRecoilValue } from 'recoil';
+import { fetchApi } from 'src/api/fetchApi';
 import { PROFILE_ARRAY } from 'src/constants/profileArray';
 import { HomeStackScreenProps } from 'src/navigations/HomeStackNavigation';
 import { userState } from 'src/store/recoilState';
@@ -30,7 +30,7 @@ function ProfileIcon({ navigation }: HomeStackScreenProps<'ProfileIcon'>) {
   const { mutate } = useMutation(
     ['updateProfile'],
     async () =>
-      await axios.patch(`${Config.API_URL}/user/${user?.id}`, {
+      await fetchApi.patch(`/user/${user?.id}`, {
         profileIcon: selected,
       }),
     {

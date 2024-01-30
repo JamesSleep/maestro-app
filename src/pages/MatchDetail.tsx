@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { useRef, useState } from 'react';
 import {
   Dimensions,
@@ -11,7 +11,6 @@ import {
   Pressable,
   Modal,
 } from 'react-native';
-import Config from 'react-native-config';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import { getStatusBarHeight } from 'react-native-safearea-height';
@@ -21,6 +20,7 @@ import YoutubeIframe from 'react-native-youtube-iframe';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { Match } from 'src/api/DataType';
+import { fetchApi } from 'src/api/fetchApi';
 import AnimatedHeader from 'src/components/AnimatedHeader';
 import CommentModal from 'src/components/CommentModal';
 import Divider from 'src/components/Divider';
@@ -55,7 +55,7 @@ function MatchDetail({
 
   const { data, isLoading } = useQuery(
     ['getOneMatch', params.id],
-    () => axios.get(`${Config.API_URL}/match/${params.id}`),
+    () => fetchApi.get(`/match/${params.id}`),
     {
       onError: error => {
         const errorResponse = (error as AxiosError).response;
@@ -72,7 +72,7 @@ function MatchDetail({
   const { mutate, isLoading: isMuteLoading } = useMutation(
     ['likeMatch'],
     (query: { matchId: number; userId?: number }) =>
-      axios.post(`${Config.API_URL}/match/like`, query),
+      fetchApi.post(`/match/like`, query),
     {
       onSuccess: response => {
         queryClient.invalidateQueries(['getOneMatch', params.id]);
@@ -88,7 +88,7 @@ function MatchDetail({
       userId: number;
       score?: number;
       content?: string;
-    }) => axios.post(`${Config.API_URL}/comment`, query),
+    }) => fetchApi.post(`/comment`, query),
     {
       onSuccess: response => {
         queryClient.invalidateQueries(['getOneMatch', params.id]);

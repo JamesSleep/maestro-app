@@ -3,6 +3,7 @@ import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { getStatusBarHeight } from 'react-native-safearea-height';
 import { useRecoilState } from 'recoil';
+import { fetchApi } from 'src/api/fetchApi';
 import { PROFILE_ARRAY } from 'src/constants/profileArray';
 import { tokenState, userState } from 'src/store/recoilState';
 import { appColor } from 'src/theme/color';
@@ -20,9 +21,12 @@ function SideBar({ state, navigation }: DrawerContentComponentProps) {
   const [user, setUser] = useRecoilState(userState);
 
   const logout = async () => {
+    navigation.closeDrawer();
     await AsyncStorage.removeItem('token');
     setUser(null);
     setToken('');
+    fetchApi.defaults.headers.Authorization = '';
+    navigation.reset({ routes: [{ name: 'SignIn' }] });
   };
 
   return (
