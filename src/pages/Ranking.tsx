@@ -15,7 +15,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { getStatusBarHeight } from 'react-native-safearea-height';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useRecoilState } from 'recoil';
 import { Match } from 'src/api/DataType';
 import { fetchApi } from 'src/api/fetchApi';
@@ -31,6 +31,7 @@ const topBannerHeight = 400;
 const headerHeight = 60 + getStatusBarHeight(true) / 2;
 
 function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
+  const queryClient = useQueryClient();
   const scrollY = useRef(new Animated.Value(0)).current;
   const [user, setUser] = useRecoilState(userState);
 
@@ -46,6 +47,20 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
       select: response => {
         const matches: Match[] = response.data.data;
         return matches;
+      },
+    },
+  );
+
+  const { mutate, isLoading: muteIsLoading } = useMutation(
+    ['updateViewsMatch'],
+    (query: { matchId: number; userId?: number }) =>
+      fetchApi.post(`/recent`, query),
+    {
+      onSuccess: response => {
+        queryClient.invalidateQueries(['getRecent']);
+      },
+      onError: error => {
+        console.log(error);
       },
     },
   );
@@ -79,7 +94,7 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
           <Icon name="menu" size={25} color={appColor.white} />
         </Pressable>
         <Pressable
-          onPress={() => navigation.toggleDrawer()}
+          onPress={() => navigation.navigate('SearchPage')}
           style={{
             width: 70,
             height: 70,
@@ -100,7 +115,8 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
           { useNativeDriver: false },
         )}>
         <TouchableWithoutFeedback
-          onPress={() =>
+          onPress={() => {
+            mutate({ matchId: data[0].id, userId: user?.id });
             navigation.navigate('MatchDetail', {
               id: data[0].id,
               isHeart:
@@ -109,8 +125,8 @@ function Ranking({ navigation }: MainDrawScreenProps<'Ranking'>) {
                 data[0].comment.filter(
                   _comment => _comment.user.id === user?.id,
                 ).length > 0,
-            })
-          }
+            });
+          }}
           style={styles.topBanner}>
           <Image
             source={{ uri: data[0].thumbnail }}

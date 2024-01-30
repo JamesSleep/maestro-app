@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, { AxiosError } from 'axios';
 import Config from 'react-native-config';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { navigate } from 'src/navigations/HomeStackNavigation';
 import { tokenState, userState } from 'src/store/recoilState';
 import { showToastError } from 'src/utils/toastMessage';
@@ -14,6 +14,11 @@ fetchApi.defaults.baseURL = Config.API_URL;
 
 fetchApi.interceptors.request.use(
   async config => {
+    const savedToken = await AsyncStorage.getItem('token');
+    if (savedToken) {
+      const token = JSON.parse(savedToken);
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   error => {
@@ -36,6 +41,7 @@ fetchApi.interceptors.response.use(
       await AsyncStorage.removeItem('token');
       showToastError('로그인실패', '토큰정보가 만료되었습니다.');
       navigate('SignIn');
+      return Promise.reject(error);
     }
     return Promise.reject(error);
   },

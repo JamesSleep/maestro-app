@@ -17,18 +17,22 @@ function RankingHorizontalView({
   title,
   tournament,
   data,
+  hideAll,
 }: {
   title: string;
   tournament?: 'WORLDS' | 'LCK';
   data: Match[];
+  hideAll?: boolean;
 }) {
   return (
     <>
       <View style={styles.scrollHeader}>
         <Text style={styles.scrollHeaderTitle}>{title}</Text>
-        <Pressable>
-          <Text style={styles.scrollHeaderBtn}>전체보기</Text>
-        </Pressable>
+        {!hideAll && (
+          <Pressable>
+            <Text style={styles.scrollHeaderBtn}>전체보기</Text>
+          </Pressable>
+        )}
       </View>
       <ScrollView
         horizontal
@@ -36,16 +40,9 @@ function RankingHorizontalView({
         overScrollMode="never"
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 10 }}>
-        {!!tournament
-          ? data.map(
-              (match: any) =>
-                tournament === match.tournament && (
-                  <RankingCard key={match.id} match={match} />
-                ),
-            )
-          : data.map((match: any) => (
-              <RankingCard key={match.id} match={match} />
-            ))}
+        {data.map((match: any) => (
+          <RankingCard key={match.id} match={match} />
+        ))}
       </ScrollView>
       <View style={{ height: 30 }} />
     </>

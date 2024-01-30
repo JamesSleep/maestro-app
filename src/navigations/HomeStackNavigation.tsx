@@ -18,6 +18,7 @@ import {
 import { Match, Player } from 'src/api/DataType';
 import ReviewPage from 'src/pages/ReviewPage';
 import PlayerPage from 'src/pages/PlayerPage';
+import SearchPage from 'src/pages/SearchPage';
 
 export type HomeStackParamList = {
   SignIn: undefined;
@@ -27,6 +28,7 @@ export type HomeStackParamList = {
   ProfileIcon: undefined;
   ReviewPage: Match;
   PlayerPage: { player: Player; isHeart: boolean; matchId: number };
+  SearchPage: undefined;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> =
@@ -52,6 +54,11 @@ function HomeStackNavigation() {
       <Stack.Screen name="ProfileIcon" component={ProfileIcon} />
       <Stack.Screen name="ReviewPage" component={ReviewPage} />
       <Stack.Screen name="PlayerPage" component={PlayerPage} />
+      <Stack.Screen
+        name="SearchPage"
+        component={SearchPage}
+        options={{ animation: 'fade_from_bottom' }}
+      />
     </Stack.Navigator>
   );
 }

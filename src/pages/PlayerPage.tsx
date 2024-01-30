@@ -44,6 +44,7 @@ function PlayerPage({
       onSuccess: response => {
         queryClient.invalidateQueries(['getOneMatch', matchId]);
         queryClient.invalidateQueries(['getAllMatches']);
+        queryClient.invalidateQueries(['getAllPlayersFavorite']);
       },
     },
   );

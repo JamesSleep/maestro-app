@@ -75,8 +75,9 @@ function MatchDetail({
       fetchApi.post(`/match/like`, query),
     {
       onSuccess: response => {
-        queryClient.invalidateQueries(['getOneMatch', params.id]);
+        queryClient.invalidateQueries(['getOneMatch']);
         queryClient.invalidateQueries(['getAllMatches']);
+        queryClient.invalidateQueries(['getAllMatchesFavorite']);
       },
     },
   );

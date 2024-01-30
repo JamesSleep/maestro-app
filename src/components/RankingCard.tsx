@@ -2,14 +2,17 @@ import { useNavigation } from '@react-navigation/native';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
+import { useMutation, useQueryClient } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { Match } from 'src/api/DataType';
+import { fetchApi } from 'src/api/fetchApi';
 import { HomeStackScreenProps } from 'src/navigations/HomeStackNavigation';
 import { userState } from 'src/store/recoilState';
 import { appColor } from 'src/theme/color';
 import { AppFontFamily } from 'src/theme/font';
 
 function RankingCard({ match }: { match: Match }) {
+  const queryClient = useQueryClient();
   const user = useRecoilValue(userState);
   const navigation =
     useNavigation<HomeStackScreenProps<'Main'>['navigation']>();
@@ -23,19 +26,34 @@ function RankingCard({ match }: { match: Match }) {
     }${round}\n${blueTeam} vs ${redTeam}`;
   };
 
+  const { mutate, isLoading: muteIsLoading } = useMutation(
+    ['updateViewsMatch'],
+    (query: { matchId: number; userId?: number }) =>
+      fetchApi.post(`/recent`, query),
+    {
+      onSuccess: response => {
+        queryClient.invalidateQueries(['getRecent']);
+      },
+      onError: error => {
+        console.log(error);
+      },
+    },
+  );
+
   return (
-    <TouchableWithoutFeedback
+    <Pressable
       key={match.id}
       style={styles.match}
-      onPress={() =>
+      onPress={() => {
+        mutate({ matchId: match.id, userId: user?.id });
         navigation.navigate('MatchDetail', {
           id: match.id,
           isHeart: match.user.filter(_user => _user.id === user?.id).length > 0,
           isRated:
             match.comment.filter(_comment => _comment.user.id === user?.id)
               .length > 0,
-        })
-      }>
+        });
+      }}>
       <View style={styles.posterBlur}></View>
       <Image
         source={
@@ -58,7 +76,7 @@ function RankingCard({ match }: { match: Match }) {
         <Text
           style={styles.matchReview}>{`${match.comment.length}개의 평가`}</Text>
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 }
 

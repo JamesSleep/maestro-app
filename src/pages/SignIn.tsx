@@ -30,7 +30,7 @@ const height = Dimensions.get('window').height;
 type SignInScreenProps = NativeStackScreenProps<HomeStackParamList, 'SignIn'>;
 
 function SignIn({ navigation }: SignInScreenProps) {
-  const [token, setToken] = useRecoilState(tokenState);
+  const [token, setToken] = useState('');
   const [user, setUser] = useRecoilState(userState);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -82,6 +82,7 @@ function SignIn({ navigation }: SignInScreenProps) {
   }, []);
   const onSubmit = useCallback(async () => {
     if (isLoading) return;
+    //console.log({ email, password });
     mutate({ email, password });
   }, [isLoading, navigation, email, password]);
 
