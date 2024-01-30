@@ -46,9 +46,9 @@ function SignIn({ navigation }: SignInScreenProps) {
         const {
           data: { data },
         } = response;
-        setToken(data.token);
-        await AsyncStorage.setItem('token', JSON.stringify(data.token));
         fetchApi.defaults.headers.Authorization = 'Bearer ' + data.token;
+        await AsyncStorage.setItem('token', JSON.stringify(data.token));
+        setToken(data.token);
       },
       onError: error => {
         const errorResponse = (error as AxiosError).response;

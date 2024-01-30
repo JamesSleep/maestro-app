@@ -350,7 +350,19 @@ function MatchDetail({
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ paddingHorizontal: 10 }}>
             {data.players.map(player => (
-              <PlayerCard key={player.id} player={player} />
+              <Pressable
+                key={player.id}
+                onPress={() =>
+                  navigation.navigate('PlayerPage', {
+                    player,
+                    isHeart:
+                      player.user.filter(_user => _user.id === user?.id)
+                        .length > 0,
+                    matchId: data.id,
+                  })
+                }>
+                <PlayerCard player={player} />
+              </Pressable>
             ))}
           </ScrollView>
         </View>

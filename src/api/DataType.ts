@@ -24,6 +24,12 @@ export interface Player {
   id: number;
   name: string;
   picture: string;
+  history: History[];
+  winning: Winning[];
+  user: User[];
+  mainProfile: string;
+  realName: string;
+  birth: string;
 }
 
 export interface User {
@@ -44,4 +50,14 @@ export interface Comment {
 export interface Gallery {
   id: number;
   uri: string;
+}
+
+export interface History {
+  team: string;
+  start: string;
+  end: string;
+}
+
+export interface Winning {
+  title: string;
 }
