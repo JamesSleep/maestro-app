@@ -15,6 +15,8 @@ import {
   createNavigationContainerRef,
   useNavigation,
 } from '@react-navigation/native';
+import { Match } from 'src/api/DataType';
+import ReviewPage from 'src/pages/ReviewPage';
 
 export type HomeStackParamList = {
   SignIn: undefined;
@@ -22,6 +24,7 @@ export type HomeStackParamList = {
   Main: undefined;
   MatchDetail: { id: number; isHeart: boolean; isRated: boolean };
   ProfileIcon: undefined;
+  ReviewPage: Match;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> =
@@ -45,6 +48,7 @@ function HomeStackNavigation() {
       <Stack.Screen name="Main" component={MainDrawNavigation} />
       <Stack.Screen name="MatchDetail" component={MatchDetail} />
       <Stack.Screen name="ProfileIcon" component={ProfileIcon} />
+      <Stack.Screen name="ReviewPage" component={ReviewPage} />
     </Stack.Navigator>
   );
 }

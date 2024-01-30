@@ -64,7 +64,6 @@ function SignIn({ navigation }: SignInScreenProps) {
     {
       enabled: !isLoading && !!token,
       onSuccess: response => {
-        //console.log(response);
         const userData: User = response.data.data;
         setUser(userData);
         if (!userData.profileIcon) {
@@ -94,8 +93,8 @@ function SignIn({ navigation }: SignInScreenProps) {
     const storeToken = await AsyncStorage.getItem('token');
     if (storeToken) {
       const savedToken = JSON.parse(storeToken);
-      setToken(savedToken);
       fetchApi.defaults.headers.Authorization = 'Bearer ' + savedToken;
+      setToken(savedToken);
     }
   };
 

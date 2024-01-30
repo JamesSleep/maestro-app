@@ -26,12 +26,12 @@ function ReviewCard({
           <View style={styles.profileContainer}>
             <Image
               style={styles.profile}
-              source={PROFILE_ARRAY[user?.profileIcon || 0]}
+              source={PROFILE_ARRAY[comment.user?.profileIcon || 0]}
             />
           </View>
           <View style={{ flex: 4 }}>
             <View style={styles.nameRow}>
-              <Text style={styles.nickname}>{user?.nickname}</Text>
+              <Text style={styles.nickname}>{comment.user.nickname}</Text>
               {comment.score > 0 && (
                 <StarRatingDisplay
                   rating={comment.score}

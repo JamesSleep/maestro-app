@@ -13,7 +13,6 @@ const RouteKR: any = [
   { name: 'League of Legends' },
   { name: '컬렉션' },
   { name: '알림' },
-  { name: '설정' },
 ];
 
 function SideBar({ state, navigation }: DrawerContentComponentProps) {

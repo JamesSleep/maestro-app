@@ -18,17 +18,20 @@ import { useMutation, useQueryClient } from 'react-query';
 import Config from 'react-native-config';
 import { useRecoilValue } from 'recoil';
 import { userState } from 'src/store/recoilState';
+import { fetchApi } from 'src/api/fetchApi';
 
 function CommentModal({
   visible,
   onClose,
   matchId,
+  content,
 }: {
   visible: boolean;
   onClose: any;
   matchId: number;
+  content?: string;
 }) {
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState(content || '');
   const inputRef = useRef<TextInput | null>(null);
   const queryClient = useQueryClient();
   const user = useRecoilValue(userState);
@@ -40,9 +43,10 @@ function CommentModal({
       userId?: number;
       score?: number;
       content?: string;
-    }) => axios.post(`${Config.API_URL}/comment`, query),
+    }) => fetchApi.post(`/comment`, query),
     {
       onSuccess: response => {
+        setComment('');
         queryClient.invalidateQueries(['getOneMatch', matchId]);
         queryClient.invalidateQueries(['getAllMatches']);
       },

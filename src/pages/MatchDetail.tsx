@@ -115,6 +115,18 @@ function MatchDetail({
     return `${year}년 ${month + 1}월 ${day}일`;
   };
 
+  const getContent = () => {
+    const isComment = data?.comment.filter(
+      comment => comment.user.id === user?.id,
+    )[0];
+
+    if (!isComment) return '';
+    if (!('content' in isComment)) {
+      return '';
+    }
+    return isComment.content || '';
+  };
+
   if (isLoading || !data) return <></>;
 
   return (
@@ -379,16 +391,22 @@ function MatchDetail({
             <View style={styles.reviewContainer}>
               <View style={styles.reviewHeader}>
                 <Text style={styles.columnTitle}>코멘트</Text>
-                <Text style={styles.columnBtnText}>전체보기</Text>
+                <Pressable
+                  onPress={() => navigation.navigate('ReviewPage', data)}>
+                  <Text style={styles.columnBtnText}>전체보기</Text>
+                </Pressable>
               </View>
-              {data.comment.map((comment, index) => (
-                <ReviewCard
-                  key={index}
-                  length={data.comment.length}
-                  index={index}
-                  comment={comment}
-                />
-              ))}
+              {data.comment.map(
+                (comment, index) =>
+                  index < 3 && (
+                    <ReviewCard
+                      key={index}
+                      length={data.comment.length}
+                      index={index}
+                      comment={comment}
+                    />
+                  ),
+              )}
             </View>
           </>
         )}
@@ -416,6 +434,7 @@ function MatchDetail({
         visible={commentVisible}
         onClose={() => setCommentVisible(false)}
         matchId={params.id}
+        content={getContent()}
       />
       <AnimatedHeader
         height={headerHeight}

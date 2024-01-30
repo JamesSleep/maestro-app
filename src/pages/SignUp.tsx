@@ -14,14 +14,15 @@ import Config from 'react-native-config';
 import { useMutation } from 'react-query';
 import DismissKeyboardView from 'src/components/DismissKeyboardView';
 import { AppFontFamily } from 'src/theme/font';
-import { RootStackParamList } from 'src/navigations/RootStackNavigation';
 import { ApiError } from 'src/types/api-error';
 import { showToastError, showToastSuccess } from 'src/utils/toastMessage';
+import { fetchApi } from 'src/api/fetchApi';
+import { HomeStackParamList } from 'src/navigations/HomeStackNavigation';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
-type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
+type SignUpScreenProps = NativeStackScreenProps<HomeStackParamList, 'SignUp'>;
 
 function SignUp({ navigation }: SignUpScreenProps) {
   const [email, setEmail] = useState('');
@@ -40,7 +41,7 @@ function SignUp({ navigation }: SignUpScreenProps) {
       password: string;
       nickname: string;
       type: string;
-    }) => axios.post(`${Config.API_URL}/user`, query),
+    }) => fetchApi.post(`/user`, query),
     {
       onSuccess: response => {
         const {
